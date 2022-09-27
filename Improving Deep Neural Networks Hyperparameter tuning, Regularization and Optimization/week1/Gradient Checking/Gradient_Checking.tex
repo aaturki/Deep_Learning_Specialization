@@ -1,0 +1,1085 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Gradient\_Checking}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{gradient-checking}{%
+\section{Gradient Checking}\label{gradient-checking}}
+
+Welcome to the final assignment for this week! In this assignment you'll
+be implementing gradient checking.
+
+By the end of this notebook, you'll be able to:
+
+Implement gradient checking to verify the accuracy of your backprop
+implementation.
+
+\hypertarget{important-note-on-submission-to-the-autograder}{%
+\subsection{Important Note on Submission to the
+AutoGrader}\label{important-note-on-submission-to-the-autograder}}
+
+Before submitting your assignment to the AutoGrader, please make sure
+you are not doing the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  You have not added any \emph{extra} \texttt{print} statement(s) in the
+  assignment.
+\item
+  You have not added any \emph{extra} code cell(s) in the assignment.
+\item
+  You have not changed any of the function parameters.
+\item
+  You are not using any global variables inside your graded exercises.
+  Unless specifically instructed to do so, please refrain from it and
+  use the local variables instead.
+\item
+  You are not changing the assignment code where it is not required,
+  like creating \emph{extra} variables.
+\end{enumerate}
+
+If you do any of the following, you will get something like,
+\texttt{Grader\ not\ found} (or similarly unexpected) error upon
+submitting your assignment. Before asking for help/debugging the errors
+in your assignment, check for these first. If this is the case, and you
+don't remember the changes you have made, you can get a fresh copy of
+the assignment by following these
+\href{https://www.coursera.org/learn/deep-neural-network/supplement/QWEnZ/h-ow-to-refresh-your-workspace}{instructions}.
+
+    \hypertarget{table-of-contents}{%
+\subsection{Table of Contents}\label{table-of-contents}}
+
+\begin{itemize}
+\tightlist
+\item
+  Section \ref{1}
+\item
+  Section \ref{2}
+\item
+  Section \ref{3}
+\item
+  Section \ref{4}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{ex-1}
+  \item
+    Section \ref{ex-2}
+  \item
+    Section \ref{ex-3}
+  \end{itemize}
+\item
+  Section \ref{5}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{ex-4}
+  \end{itemize}
+\end{itemize}
+
+    \#\# 1 - Packages
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{testCases} \PY{k+kn}{import} \PY{o}{*}
+\PY{k+kn}{from} \PY{n+nn}{public\PYZus{}tests} \PY{k+kn}{import} \PY{o}{*}
+\PY{k+kn}{from} \PY{n+nn}{gc\PYZus{}utils} \PY{k+kn}{import} \PY{n}{sigmoid}\PY{p}{,} \PY{n}{relu}\PY{p}{,} \PY{n}{dictionary\PYZus{}to\PYZus{}vector}\PY{p}{,} \PY{n}{vector\PYZus{}to\PYZus{}dictionary}\PY{p}{,} \PY{n}{gradients\PYZus{}to\PYZus{}vector}
+
+\PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+\PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\# 2 - Problem Statement
+
+You are part of a team working to make mobile payments available
+globally, and are asked to build a deep learning model to detect
+fraud--whenever someone makes a payment, you want to see if the payment
+might be fraudulent, such as if the user's account has been taken over
+by a hacker.
+
+You already know that backpropagation is quite challenging to implement,
+and sometimes has bugs. Because this is a mission-critical application,
+your company's CEO wants to be really certain that your implementation
+of backpropagation is correct. Your CEO says, ``Give me proof that your
+backpropagation is actually working!'' To give this reassurance, you are
+going to use ``gradient checking.''
+
+Let's do it!
+
+    \#\# 3 - How does Gradient Checking work? Backpropagation computes the
+gradients \(\frac{\partial J}{\partial \theta}\), where \(\theta\)
+denotes the parameters of the model. \(J\) is computed using forward
+propagation and your loss function.
+
+Because forward propagation is relatively easy to implement, you're
+confident you got that right, and so you're almost 100\% sure that
+you're computing the cost \(J\) correctly. Thus, you can use your code
+for computing \(J\) to verify the code for computing
+\(\frac{\partial J}{\partial \theta}\).
+
+Let's look back at the definition of a derivative (or
+gradient):\[ \frac{\partial J}{\partial \theta} = \lim_{\varepsilon \to 0} \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon} \tag{1}\]
+
+If you're not familiar with the
+``\(\displaystyle \lim_{\varepsilon \to 0}\)'' notation, it's just a way
+of saying ``when \(\varepsilon\) is really, really small.''
+
+You know the following:
+
+\(\frac{\partial J}{\partial \theta}\) is what you want to make sure
+you're computing correctly. You can compute \(J(\theta + \varepsilon)\)
+and \(J(\theta - \varepsilon)\) (in the case that \(\theta\) is a real
+number), since you're confident your implementation for \(J\) is
+correct. Let's use equation (1) and a small value for \(\varepsilon\) to
+convince your CEO that your code for computing
+\(\frac{\partial J}{\partial \theta}\) is correct!
+
+    \#\# 4 - 1-Dimensional Gradient Checking
+
+Consider a 1D linear function \(J(\theta) = \theta x\). The model
+contains only a single real-valued parameter \(\theta\), and takes \(x\)
+as input.
+
+You will implement code to compute \(J(.)\) and its derivative
+\(\frac{\partial J}{\partial \theta}\). You will then use gradient
+checking to make sure your derivative computation for \(J\) is correct.
+
+Figure 1:1D linear model
+
+The diagram above shows the key computation steps: First start with
+\(x\), then evaluate the function \(J(x)\) (``forward propagation'').
+Then compute the derivative \(\frac{\partial J}{\partial \theta}\)
+(``backward propagation'').
+
+\#\#\# Exercise 1 - forward\_propagation
+
+Implement \texttt{forward\ propagation}. For this simple function
+compute \(J(.)\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: forward\PYZus{}propagation}
+
+\PY{k}{def} \PY{n+nf}{forward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Implement the linear forward propagation (compute J) presented in Figure 1 (J(theta) = theta * x)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    x \PYZhy{}\PYZhy{} a real\PYZhy{}valued input}
+\PY{l+s+sd}{    theta \PYZhy{}\PYZhy{} our parameter, a real number as well}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    J \PYZhy{}\PYZhy{} the value of function J, computed using the formula J(theta) = theta * x}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} (approx. 1 line)}
+    \PY{c+c1}{\PYZsh{} J = }
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    \PY{n}{J} \PY{o}{=} \PY{n}{theta} \PY{o}{*} \PY{n}{x}
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    
+    \PY{k}{return} \PY{n}{J}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{p}{,} \PY{n}{theta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}
+\PY{n}{J} \PY{o}{=} \PY{n}{forward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{J = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{J}\PY{p}{)}\PY{p}{)}
+\PY{n}{forward\PYZus{}propagation\PYZus{}test}\PY{p}{(}\PY{n}{forward\PYZus{}propagation}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+J = 8
+\textcolor{ansi-green-intense}{ All tests passed.}
+    \end{Verbatim}
+
+    \#\#\# Exercise 2 - backward\_propagation
+
+Now, implement the \texttt{backward\ propagation} step (derivative
+computation) of Figure 1. That is, compute the derivative of
+\(J(\theta) = \theta x\) with respect to \(\theta\). To save you from
+doing the calculus, you should get
+\(dtheta = \frac { \partial J }{ \partial \theta} = x\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: backward\PYZus{}propagation}
+
+\PY{k}{def} \PY{n+nf}{backward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Computes the derivative of J with respect to theta (see Figure 1).}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    x \PYZhy{}\PYZhy{} a real\PYZhy{}valued input}
+\PY{l+s+sd}{    theta \PYZhy{}\PYZhy{} our parameter, a real number as well}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    dtheta \PYZhy{}\PYZhy{} the gradient of the cost with respect to theta}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} (approx. 1 line)}
+    \PY{c+c1}{\PYZsh{} dtheta = }
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    \PY{n}{dtheta} \PY{o}{=} \PY{n}{x}
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    
+    \PY{k}{return} \PY{n}{dtheta}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{p}{,} \PY{n}{theta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}
+\PY{n}{dtheta} \PY{o}{=} \PY{n}{backward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dtheta = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{dtheta}\PY{p}{)}\PY{p}{)}
+\PY{n}{backward\PYZus{}propagation\PYZus{}test}\PY{p}{(}\PY{n}{backward\PYZus{}propagation}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+dtheta = 2
+\textcolor{ansi-green-intense}{ All tests passed.}
+    \end{Verbatim}
+
+    \#\#\# Exercise 3 - gradient\_check
+
+To show that the \texttt{backward\_propagation()} function is correctly
+computing the gradient \(\frac{\partial J}{\partial \theta}\), let's
+implement gradient checking.
+
+\textbf{Instructions}: - First compute ``gradapprox'' using the formula
+above (1) and a small value of \(\varepsilon\). Here are the Steps to
+follow: 1. \(\theta^{+} = \theta + \varepsilon\) 2.
+\(\theta^{-} = \theta - \varepsilon\) 3. \(J^{+} = J(\theta^{+})\) 4.
+\(J^{-} = J(\theta^{-})\) 5.
+\(gradapprox = \frac{J^{+} - J^{-}}{2 \varepsilon}\) - Then compute the
+gradient using backward propagation, and store the result in a variable
+``grad'' - Finally, compute the relative difference between
+``gradapprox'' and the ``grad'' using the following formula:
+\[ difference = \frac {\mid\mid grad - gradapprox \mid\mid_2}{\mid\mid grad \mid\mid_2 + \mid\mid gradapprox \mid\mid_2} \tag{2}\]
+You will need 3 Steps to compute this formula: - 1'. compute the
+numerator using np.linalg.norm(\ldots) - 2'. compute the denominator.
+You will need to call np.linalg.norm(\ldots) twice. - 3'. divide them. -
+If this difference is small (say less than \(10^{-7}\)), you can be
+quite confident that you have computed your gradient correctly.
+Otherwise, there may be a mistake in the gradient computation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: gradient\PYZus{}check}
+
+\PY{k}{def} \PY{n+nf}{gradient\PYZus{}check}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{,} \PY{n}{epsilon}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}7}\PY{p}{,} \PY{n}{print\PYZus{}msg}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Implement the backward propagation presented in Figure 1.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    x \PYZhy{}\PYZhy{} a float input}
+\PY{l+s+sd}{    theta \PYZhy{}\PYZhy{} our parameter, a float as well}
+\PY{l+s+sd}{    epsilon \PYZhy{}\PYZhy{} tiny shift to the input to compute approximated gradient with formula(1)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    difference \PYZhy{}\PYZhy{} difference (2) between the approximated gradient and the backward propagation gradient. Float output}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} Compute gradapprox using left side of formula (1). epsilon is small enough, you don\PYZsq{}t need to worry about the limit.}
+    \PY{c+c1}{\PYZsh{} (approx. 5 lines)}
+    \PY{n}{theta\PYZus{}plus} \PY{o}{=} \PY{n}{theta} \PY{o}{+} \PY{n}{epsilon}                                \PY{c+c1}{\PYZsh{} Step 1}
+    \PY{n}{theta\PYZus{}minus} \PY{o}{=} \PY{n}{theta} \PY{o}{\PYZhy{}} \PY{n}{epsilon}                               \PY{c+c1}{\PYZsh{} Step 2}
+    \PY{n}{J\PYZus{}plus} \PY{o}{=}  \PY{n}{forward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta\PYZus{}plus}\PY{p}{)}                                  \PY{c+c1}{\PYZsh{} Step 3}
+    \PY{n}{J\PYZus{}minus} \PY{o}{=} \PY{n}{forward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta\PYZus{}minus}\PY{p}{)}                                   \PY{c+c1}{\PYZsh{} Step 4}
+    \PY{n}{gradapprox} \PY{o}{=} \PY{p}{(}\PY{n}{J\PYZus{}plus} \PY{o}{\PYZhy{}} \PY{n}{J\PYZus{}minus}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{epsilon}\PY{p}{)}                               \PY{c+c1}{\PYZsh{} Step 5}
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    
+    \PY{c+c1}{\PYZsh{} Check if gradapprox is close enough to the output of backward\PYZus{}propagation()}
+    \PY{c+c1}{\PYZsh{}(approx. 1 line)}
+    \PY{n}{grad} \PY{o}{=} \PY{n}{backward\PYZus{}propagation}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    
+    \PY{c+c1}{\PYZsh{}(approx. 1 line)}
+    \PY{n}{numerator} \PY{o}{=}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{grad} \PY{o}{\PYZhy{}} \PY{n}{gradapprox}\PY{p}{)}                               \PY{c+c1}{\PYZsh{} Step 1\PYZsq{}}
+    \PY{n}{denominator} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{grad}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{gradapprox}\PY{p}{)}                              \PY{c+c1}{\PYZsh{} Step 2\PYZsq{}}
+    \PY{n}{difference} \PY{o}{=}  \PY{n}{numerator} \PY{o}{/} \PY{n}{denominator}                              \PY{c+c1}{\PYZsh{} Step 3\PYZsq{}}
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    \PY{k}{if} \PY{n}{print\PYZus{}msg}\PY{p}{:}
+        \PY{k}{if} \PY{n}{difference} \PY{o}{\PYZgt{}} \PY{l+m+mf}{2e\PYZhy{}7}\PY{p}{:}
+            \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[93m}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{There is a mistake in the backward propagation! difference = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{difference}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[92m}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Your backward propagation works perfectly fine! difference = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{difference}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{difference}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x}\PY{p}{,} \PY{n}{theta} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}
+\PY{n}{difference} \PY{o}{=} \PY{n}{gradient\PYZus{}check}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{,} \PY{n}{print\PYZus{}msg}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{Your backward propagation works perfectly fine! difference =
+2.919335883291695e-10}
+    \end{Verbatim}
+
+    Congrats, the difference is smaller than the \(10^{-7}\) threshold. So
+you can have high confidence that you've correctly computed the gradient
+in \texttt{backward\_propagation()}.
+
+Now, in the more general case, your cost function \(J\) has more than a
+single 1D input. When you are training a neural network, \(\theta\)
+actually consists of multiple matrices \(W^{[l]}\) and biases
+\(b^{[l]}\)! It is important to know how to do a gradient check with
+higher-dimensional inputs. Let's do it!
+
+    \#\# 5 - N-Dimensional Gradient Checking
+
+    The following figure describes the forward and backward propagation of
+your fraud detection model.
+
+Figure 2: Deep neural network. LINEAR -\textgreater{} RELU
+-\textgreater{} LINEAR -\textgreater{} RELU -\textgreater{} LINEAR
+-\textgreater{} SIGMOID
+
+Let's look at your implementations for forward propagation and backward
+propagation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{forward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Implements the forward propagation (and computes the cost) presented in Figure 3.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    X \PYZhy{}\PYZhy{} training set for m examples}
+\PY{l+s+sd}{    Y \PYZhy{}\PYZhy{} labels for m examples }
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters \PYZdq{}W1\PYZdq{}, \PYZdq{}b1\PYZdq{}, \PYZdq{}W2\PYZdq{}, \PYZdq{}b2\PYZdq{}, \PYZdq{}W3\PYZdq{}, \PYZdq{}b3\PYZdq{}:}
+\PY{l+s+sd}{                    W1 \PYZhy{}\PYZhy{} weight matrix of shape (5, 4)}
+\PY{l+s+sd}{                    b1 \PYZhy{}\PYZhy{} bias vector of shape (5, 1)}
+\PY{l+s+sd}{                    W2 \PYZhy{}\PYZhy{} weight matrix of shape (3, 5)}
+\PY{l+s+sd}{                    b2 \PYZhy{}\PYZhy{} bias vector of shape (3, 1)}
+\PY{l+s+sd}{                    W3 \PYZhy{}\PYZhy{} weight matrix of shape (1, 3)}
+\PY{l+s+sd}{                    b3 \PYZhy{}\PYZhy{} bias vector of shape (1, 1)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    cost \PYZhy{}\PYZhy{} the cost function (logistic cost for one example)}
+\PY{l+s+sd}{    cache \PYZhy{}\PYZhy{} a tuple with the intermediate values (Z1, A1, W1, b1, Z2, A2, W2, b2, Z3, A3, W3, b3)}
+
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} retrieve parameters}
+    \PY{n}{m} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{W1} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{n}{b1} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{n}{W2} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{n}{b2} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{n}{W3} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{n}{b3} \PY{o}{=} \PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} LINEAR \PYZhy{}\PYZgt{} RELU \PYZhy{}\PYZgt{} LINEAR \PYZhy{}\PYZgt{} RELU \PYZhy{}\PYZgt{} LINEAR \PYZhy{}\PYZgt{} SIGMOID}
+    \PY{n}{Z1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{W1}\PY{p}{,} \PY{n}{X}\PY{p}{)} \PY{o}{+} \PY{n}{b1}
+    \PY{n}{A1} \PY{o}{=} \PY{n}{relu}\PY{p}{(}\PY{n}{Z1}\PY{p}{)}
+    \PY{n}{Z2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{W2}\PY{p}{,} \PY{n}{A1}\PY{p}{)} \PY{o}{+} \PY{n}{b2}
+    \PY{n}{A2} \PY{o}{=} \PY{n}{relu}\PY{p}{(}\PY{n}{Z2}\PY{p}{)}
+    \PY{n}{Z3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{W3}\PY{p}{,} \PY{n}{A2}\PY{p}{)} \PY{o}{+} \PY{n}{b3}
+    \PY{n}{A3} \PY{o}{=} \PY{n}{sigmoid}\PY{p}{(}\PY{n}{Z3}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Cost}
+    \PY{n}{log\PYZus{}probs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{A3}\PY{p}{)}\PY{p}{,}\PY{n}{Y}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{A3}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{Y}\PY{p}{)}
+    \PY{n}{cost} \PY{o}{=} \PY{l+m+mf}{1.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{log\PYZus{}probs}\PY{p}{)}
+    
+    \PY{n}{cache} \PY{o}{=} \PY{p}{(}\PY{n}{Z1}\PY{p}{,} \PY{n}{A1}\PY{p}{,} \PY{n}{W1}\PY{p}{,} \PY{n}{b1}\PY{p}{,} \PY{n}{Z2}\PY{p}{,} \PY{n}{A2}\PY{p}{,} \PY{n}{W2}\PY{p}{,} \PY{n}{b2}\PY{p}{,} \PY{n}{Z3}\PY{p}{,} \PY{n}{A3}\PY{p}{,} \PY{n}{W3}\PY{p}{,} \PY{n}{b3}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{cost}\PY{p}{,} \PY{n}{cache}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now, run backward propagation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{backward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{cache}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Implement the backward propagation presented in figure 2.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    X \PYZhy{}\PYZhy{} input datapoint, of shape (input size, 1)}
+\PY{l+s+sd}{    Y \PYZhy{}\PYZhy{} true \PYZdq{}label\PYZdq{}}
+\PY{l+s+sd}{    cache \PYZhy{}\PYZhy{} cache output from forward\PYZus{}propagation\PYZus{}n()}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    gradients \PYZhy{}\PYZhy{} A dictionary with the gradients of the cost with respect to each parameter, activation and pre\PYZhy{}activation variables.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{n}{m} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{p}{(}\PY{n}{Z1}\PY{p}{,} \PY{n}{A1}\PY{p}{,} \PY{n}{W1}\PY{p}{,} \PY{n}{b1}\PY{p}{,} \PY{n}{Z2}\PY{p}{,} \PY{n}{A2}\PY{p}{,} \PY{n}{W2}\PY{p}{,} \PY{n}{b2}\PY{p}{,} \PY{n}{Z3}\PY{p}{,} \PY{n}{A3}\PY{p}{,} \PY{n}{W3}\PY{p}{,} \PY{n}{b3}\PY{p}{)} \PY{o}{=} \PY{n}{cache}
+    
+    \PY{n}{dZ3} \PY{o}{=} \PY{n}{A3} \PY{o}{\PYZhy{}} \PY{n}{Y}
+    \PY{n}{dW3} \PY{o}{=} \PY{l+m+mf}{1.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{dZ3}\PY{p}{,} \PY{n}{A2}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+    \PY{n}{db3} \PY{o}{=} \PY{l+m+mf}{1.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{dZ3}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{keepdims}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    
+    \PY{n}{dA2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{W3}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{dZ3}\PY{p}{)}
+    \PY{n}{dZ2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{dA2}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{int64}\PY{p}{(}\PY{n}{A2} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+    \PY{n}{dW2} \PY{o}{=} \PY{l+m+mf}{1.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{dZ2}\PY{p}{,} \PY{n}{A1}\PY{o}{.}\PY{n}{T}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{2}
+    \PY{n}{db2} \PY{o}{=} \PY{l+m+mf}{1.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{dZ2}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{keepdims}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    
+    \PY{n}{dA1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{W2}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{dZ2}\PY{p}{)}
+    \PY{n}{dZ1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{multiply}\PY{p}{(}\PY{n}{dA1}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{int64}\PY{p}{(}\PY{n}{A1} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+    \PY{n}{dW1} \PY{o}{=} \PY{l+m+mf}{1.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{dZ1}\PY{p}{,} \PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+    \PY{n}{db1} \PY{o}{=} \PY{l+m+mf}{4.} \PY{o}{/} \PY{n}{m} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{dZ1}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{keepdims}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+    
+    \PY{n}{gradients} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dZ3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dZ3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dW3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{db3}\PY{p}{,}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dA2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dA2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dZ2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dZ2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dW2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{db2}\PY{p}{,}
+                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dA1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dA1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dZ1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dZ1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dW1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{db1}\PY{p}{\PYZcb{}}
+    
+    \PY{k}{return} \PY{n}{gradients}
+\end{Verbatim}
+\end{tcolorbox}
+
+    You obtained some results on the fraud detection test set but you are
+not 100\% sure of your model. Nobody's perfect! Let's implement gradient
+checking to verify if your gradients are correct.
+
+    \textbf{How does gradient checking work?}.
+
+As in Section 3 and 4, you want to compare ``gradapprox'' to the
+gradient computed by backpropagation. The formula is still:
+
+\[ \frac{\partial J}{\partial \theta} = \lim_{\varepsilon \to 0} \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon} \tag{1}\]
+
+However, \(\theta\) is not a scalar anymore. It is a dictionary called
+``parameters''. The function ``\texttt{dictionary\_to\_vector()}'' has
+been implemented for you. It converts the ``parameters'' dictionary into
+a vector called ``values'', obtained by reshaping all parameters (W1,
+b1, W2, b2, W3, b3) into vectors and concatenating them.
+
+The inverse function is ``\texttt{vector\_to\_dictionary}'' which
+outputs back the ``parameters'' dictionary.
+
+Figure 2: dictionary\_to\_vector() and vector\_to\_dictionary(). You
+will need these functions in gradient\_check\_n()
+
+The ``gradients'' dictionary has also been converted into a vector
+``grad'' using gradients\_to\_vector(), so you don't need to worry about
+that.
+
+Now, for every single parameter in your vector, you will apply the same
+procedure as for the gradient\_check exercise. You will store each
+gradient approximation in a vector \texttt{gradapprox}. If the check
+goes as expected, each value in this approximation must match the real
+gradient values stored in the \texttt{grad} vector.
+
+Note that \texttt{grad} is calculated using the function
+\texttt{gradients\_to\_vector}, which uses the gradients outputs of the
+\texttt{backward\_propagation\_n} function.
+
+\#\#\# Exercise 4 - gradient\_check\_n
+
+Implement the function below.
+
+\textbf{Instructions}: Here is pseudo-code that will help you implement
+the gradient check.
+
+For each i in num\_parameters: - To compute \texttt{J\_plus{[}i{]}}: 1.
+Set \(\theta^{+}\) to \texttt{np.copy(parameters\_values)} 2. Set
+\(\theta^{+}_i\) to \(\theta^{+}_i + \varepsilon\) 3. Calculate
+\(J^{+}_i\) using to
+\texttt{forward\_propagation\_n(x,\ y,\ vector\_to\_dictionary(}\(\theta^{+}\)
+\texttt{))}.\\
+- To compute \texttt{J\_minus{[}i{]}}: do the same thing with
+\(\theta^{-}\) - Compute
+\(gradapprox[i] = \frac{J^{+}_i - J^{-}_i}{2 \varepsilon}\)
+
+Thus, you get a vector gradapprox, where gradapprox{[}i{]} is an
+approximation of the gradient with respect to
+\texttt{parameter\_values{[}i{]}}. You can now compare this gradapprox
+vector to the gradients vector from backpropagation. Just like for the
+1D case (Steps 1', 2', 3'), compute:
+\[ difference = \frac {\| grad - gradapprox \|_2}{\| grad \|_2 + \| gradapprox \|_2 } \tag{3}\]
+
+\textbf{Note}: Use \texttt{np.linalg.norm} to get the norms
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: gradient\PYZus{}check\PYZus{}n}
+
+\PY{k}{def} \PY{n+nf}{gradient\PYZus{}check\PYZus{}n}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{gradients}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{epsilon}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}7}\PY{p}{,} \PY{n}{print\PYZus{}msg}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Checks if backward\PYZus{}propagation\PYZus{}n computes correctly the gradient of the cost output by forward\PYZus{}propagation\PYZus{}n}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters \PYZdq{}W1\PYZdq{}, \PYZdq{}b1\PYZdq{}, \PYZdq{}W2\PYZdq{}, \PYZdq{}b2\PYZdq{}, \PYZdq{}W3\PYZdq{}, \PYZdq{}b3\PYZdq{}:}
+\PY{l+s+sd}{    grad \PYZhy{}\PYZhy{} output of backward\PYZus{}propagation\PYZus{}n, contains gradients of the cost with respect to the parameters. }
+\PY{l+s+sd}{    x \PYZhy{}\PYZhy{} input datapoint, of shape (input size, 1)}
+\PY{l+s+sd}{    y \PYZhy{}\PYZhy{} true \PYZdq{}label\PYZdq{}}
+\PY{l+s+sd}{    epsilon \PYZhy{}\PYZhy{} tiny shift to the input to compute approximated gradient with formula(1)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    difference \PYZhy{}\PYZhy{} difference (2) between the approximated gradient and the backward propagation gradient}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} Set\PYZhy{}up variables}
+    \PY{n}{parameters\PYZus{}values}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{dictionary\PYZus{}to\PYZus{}vector}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+    
+    \PY{n}{grad} \PY{o}{=} \PY{n}{gradients\PYZus{}to\PYZus{}vector}\PY{p}{(}\PY{n}{gradients}\PY{p}{)}
+    \PY{n}{num\PYZus{}parameters} \PY{o}{=} \PY{n}{parameters\PYZus{}values}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{J\PYZus{}plus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{num\PYZus{}parameters}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{n}{J\PYZus{}minus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{num\PYZus{}parameters}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{n}{grad\PYZus{}approx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{num\PYZus{}parameters}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Compute gradapprox}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}parameters}\PY{p}{)}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} Compute J\PYZus{}plus[i]. Inputs: \PYZdq{}parameters\PYZus{}values, epsilon\PYZdq{}. Output = \PYZdq{}J\PYZus{}plus[i]\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{} \PYZdq{}\PYZus{}\PYZdq{} is used because the function you have to outputs two parameters but we only care about the first one}
+        \PY{c+c1}{\PYZsh{}(approx. 3 lines)}
+        \PY{n}{theta\PYZus{}plus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{parameters\PYZus{}values}\PY{p}{)}                                                     \PY{c+c1}{\PYZsh{} Step 1}
+        \PY{n}{theta\PYZus{}plus}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{theta\PYZus{}plus}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{+} \PY{n}{epsilon}                                                     \PY{c+c1}{\PYZsh{} Step 2}
+        \PY{n}{J\PYZus{}plus}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{forward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{vector\PYZus{}to\PYZus{}dictionary}\PY{p}{(}\PY{n}{theta\PYZus{}plus}\PY{p}{)}\PY{p}{)}                \PY{c+c1}{\PYZsh{} Step 3}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+        
+        \PY{c+c1}{\PYZsh{} Compute J\PYZus{}minus[i]. Inputs: \PYZdq{}parameters\PYZus{}values, epsilon\PYZdq{}. Output = \PYZdq{}J\PYZus{}minus[i]\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{}(approx. 3 lines)}
+        \PY{n}{theta\PYZus{}minus} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{parameters\PYZus{}values}\PY{p}{)}                                   \PY{c+c1}{\PYZsh{} Step 1}
+        \PY{n}{theta\PYZus{}minus}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{theta\PYZus{}minus}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{epsilon}                                \PY{c+c1}{\PYZsh{} Step 2        }
+        \PY{n}{J\PYZus{}minus}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{forward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{vector\PYZus{}to\PYZus{}dictionary}\PY{p}{(}\PY{n}{theta\PYZus{}minus}\PY{p}{)}\PY{p}{)}                                \PY{c+c1}{\PYZsh{} Step 3}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+        
+        \PY{c+c1}{\PYZsh{} Compute gradapprox[i]}
+        \PY{c+c1}{\PYZsh{} (approx. 1 line)}
+        \PY{n}{grad\PYZus{}approx}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{J\PYZus{}plus}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{J\PYZus{}minus}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{epsilon}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    
+    \PY{c+c1}{\PYZsh{} Compare gradapprox to backward propagation gradients by computing difference.}
+    \PY{c+c1}{\PYZsh{} (approx. 1 line)}
+    \PY{n}{numerator} \PY{o}{=}  \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{grad} \PY{o}{\PYZhy{}} \PY{n}{grad\PYZus{}approx}\PY{p}{)}                                           \PY{c+c1}{\PYZsh{} Step 1\PYZsq{}}
+    \PY{n}{denominator} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{grad}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{grad\PYZus{}approx}\PY{p}{)}                                          \PY{c+c1}{\PYZsh{} Step 2\PYZsq{}}
+    \PY{n}{difference} \PY{o}{=} \PY{n}{numerator} \PY{o}{/}\PY{n}{denominator}                                            \PY{c+c1}{\PYZsh{} Step 3\PYZsq{}}
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    \PY{k}{if} \PY{n}{print\PYZus{}msg}\PY{p}{:}
+        \PY{k}{if} \PY{n}{difference} \PY{o}{\PYZgt{}} \PY{l+m+mf}{2e\PYZhy{}7}\PY{p}{:}
+            \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[93m}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{There is a mistake in the backward propagation! difference = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{difference}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[92m}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Your backward propagation works perfectly fine! difference = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{difference}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[0m}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{difference}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{parameters} \PY{o}{=} \PY{n}{gradient\PYZus{}check\PYZus{}n\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{cost}\PY{p}{,} \PY{n}{cache} \PY{o}{=} \PY{n}{forward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+\PY{n}{gradients} \PY{o}{=} \PY{n}{backward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{cache}\PY{p}{)}
+\PY{n}{difference} \PY{o}{=} \PY{n}{gradient\PYZus{}check\PYZus{}n}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{gradients}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{l+m+mf}{1e\PYZhy{}7}\PY{p}{,} \PY{k+kc}{True}\PY{p}{)}
+\PY{n}{expected\PYZus{}values} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.2850931567761623}\PY{p}{,} \PY{l+m+mf}{1.1890913024229996e\PYZhy{}07}\PY{p}{]}
+\PY{k}{assert} \PY{o+ow}{not}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{difference}\PY{p}{)} \PY{o}{==} \PY{n}{np}\PY{o}{.}\PY{n}{ndarray}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{You are not using np.linalg.norm for numerator or denominator}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{isclose}\PY{p}{(}\PY{n}{difference}\PY{p}{,} \PY{n}{expected\PYZus{}values}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong value. It is not one of the expected values}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-yellow-intense}{There is a mistake in the backward propagation! difference =
+0.2850931567761623}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{parameters} \PY{o}{=} \PY{n}{gradient\PYZus{}check\PYZus{}n\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{cost}\PY{p}{,} \PY{n}{cache} \PY{o}{=} \PY{n}{forward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+\PY{n}{gradients} \PY{o}{=} \PY{n}{backward\PYZus{}propagation\PYZus{}n}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{cache}\PY{p}{)}
+\PY{n}{difference} \PY{o}{=} \PY{n}{gradient\PYZus{}check\PYZus{}n}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{gradients}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{l+m+mf}{1e\PYZhy{}7}\PY{p}{,} \PY{k+kc}{True}\PY{p}{)}
+\PY{k}{assert} \PY{o+ow}{not}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{difference}\PY{p}{)} \PY{o}{==} \PY{n}{np}\PY{o}{.}\PY{n}{ndarray}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{You are not using np.linalg.norm for numerator or denominator}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{gradient\PYZus{}check\PYZus{}n\PYZus{}test}\PY{p}{(}\PY{n}{gradient\PYZus{}check\PYZus{}n}\PY{p}{,} \PY{n}{parameters}\PY{p}{,} \PY{n}{gradients}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-yellow-intense}{There is a mistake in the backward propagation! difference =
+0.2850931567761623}
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-12-62fd8707424c> in <module>
+          6 assert not(type(difference) == np.ndarray), "You are not using np.linalg.norm for numerator or denominator"
+          7 
+    ----> 8 gradient\_check\_n\_test(gradient\_check\_n, parameters, gradients, X, Y)
+          9 
+
+
+        NameError: name 'gradient\_check\_n\_test' is not defined
+
+    \end{Verbatim}
+
+    \textbf{Expected output}:
+
+There is a mistake in the backward propagation!
+
+difference = 0.2850931567761623
+
+    It seems that there were errors in the \texttt{backward\_propagation\_n}
+code! Good thing you've implemented the gradient check. Go back to
+\texttt{backward\_propagation} and try to find/correct the errors
+\emph{(Hint: check dW2 and db1)}. Rerun the gradient check when you
+think you've fixed it. Remember, you'll need to re-execute the cell
+defining \texttt{backward\_propagation\_n()} if you modify the code.
+
+Can you get gradient check to declare your derivative computation
+correct? Even though this part of the assignment isn't graded, you
+should try to find the bug and re-run gradient check until you're
+convinced backprop is now correctly implemented.
+
+\textbf{Notes} - Gradient Checking is slow! Approximating the gradient
+with
+\(\frac{\partial J}{\partial \theta} \approx \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon}\)
+is computationally costly. For this reason, we don't run gradient
+checking at every iteration during training. Just a few times to check
+if the gradient is correct. - Gradient Checking, at least as we've
+presented it, doesn't work with dropout. You would usually run the
+gradient check algorithm without dropout to make sure your backprop is
+correct, then add dropout.
+
+Congrats! Now you can be confident that your deep learning model for
+fraud detection is working correctly! You can even use this to convince
+your CEO. :)
+
+\textbf{What you should remember from this notebook}: - Gradient
+checking verifies closeness between the gradients from backpropagation
+and the numerical approximation of the gradient (computed using forward
+propagation). - Gradient checking is slow, so you don't want to run it
+in every iteration of training. You would usually run it only to make
+sure your code is correct, then turn it off and use backprop for the
+actual learning process.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

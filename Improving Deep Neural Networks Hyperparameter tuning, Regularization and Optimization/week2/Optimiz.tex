@@ -1,0 +1,2096 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Optimization\_methods}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{optimization-methods}{%
+\section{Optimization Methods}\label{optimization-methods}}
+
+Until now, you've always used Gradient Descent to update the parameters
+and minimize the cost. In this notebook, you'll gain skills with some
+more advanced optimization methods that can speed up learning and
+perhaps even get you to a better final value for the cost function.
+Having a good optimization algorithm can be the difference between
+waiting days vs.~just a few hours to get a good result.
+
+By the end of this notebook, you'll be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Apply optimization methods such as (Stochastic) Gradient Descent,
+  Momentum, RMSProp and Adam
+\item
+  Use random minibatches to accelerate convergence and improve
+  optimization
+\end{itemize}
+
+Gradient descent goes ``downhill'' on a cost function \(J\). Think of it
+as trying to do this:
+
+Figure 1 : Minimizing the cost is like finding the lowest point in a
+hilly landscape At each step of the training, you update your parameters
+following a certain direction to try to get to the lowest possible
+point.
+
+\textbf{Notations}: As usual, \$\frac{\partial J}{\partial a } = \$
+\texttt{da} for any variable \texttt{a}.
+
+Let's get started!
+
+\hypertarget{important-note-on-submission-to-the-autograder}{%
+\subsection{Important Note on Submission to the
+AutoGrader}\label{important-note-on-submission-to-the-autograder}}
+
+Before submitting your assignment to the AutoGrader, please make sure
+you are not doing the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  You have not added any \emph{extra} \texttt{print} statement(s) in the
+  assignment.
+\item
+  You have not added any \emph{extra} code cell(s) in the assignment.
+\item
+  You have not changed any of the function parameters.
+\item
+  You are not using any global variables inside your graded exercises.
+  Unless specifically instructed to do so, please refrain from it and
+  use the local variables instead.
+\item
+  You are not changing the assignment code where it is not required,
+  like creating \emph{extra} variables.
+\end{enumerate}
+
+If you do any of the following, you will get something like,
+\texttt{Grader\ not\ found} (or similarly unexpected) error upon
+submitting your assignment. Before asking for help/debugging the errors
+in your assignment, check for these first. If this is the case, and you
+don't remember the changes you have made, you can get a fresh copy of
+the assignment by following these
+\href{https://www.coursera.org/learn/deep-neural-network/supplement/QWEnZ/h-ow-to-refresh-your-workspace}{instructions}.
+
+    \hypertarget{table-of-contents}{%
+\subsection{Table of Contents}\label{table-of-contents}}
+
+\begin{itemize}
+\tightlist
+\item
+  Section \ref{1}
+\item
+  Section \ref{2}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{ex-1}
+  \end{itemize}
+\item
+  Section \ref{3}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{ex-2}
+  \end{itemize}
+\item
+  Section \ref{4}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{ex-3}
+  \item
+    Section \ref{ex-4}
+  \end{itemize}
+\item
+  Section \ref{5}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{ex-5}
+  \item
+    Section \ref{ex-6}
+  \end{itemize}
+\item
+  Section \ref{6}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{6-1}
+  \item
+    Section \ref{6-2}
+  \item
+    Section \ref{6-3}
+  \item
+    Section \ref{6-4}
+  \end{itemize}
+\item
+  Section \ref{7}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Section \ref{7-1}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{ex-7}
+    \end{itemize}
+  \item
+    Section \ref{7-2}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{ex-8}
+    \end{itemize}
+  \item
+    Section \ref{7-3}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Section \ref{7-3-1}
+    \item
+      Section \ref{7-3-2}
+    \item
+      Section \ref{7-3-3}
+    \end{itemize}
+  \item
+    Section \ref{7-4}
+  \end{itemize}
+\end{itemize}
+
+    \#\# 1- Packages
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{io}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\PY{k+kn}{import} \PY{n+nn}{sklearn}
+\PY{k+kn}{import} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets}
+
+\PY{k+kn}{from} \PY{n+nn}{opt\PYZus{}utils\PYZus{}v1a} \PY{k+kn}{import} \PY{n}{load\PYZus{}params\PYZus{}and\PYZus{}grads}\PY{p}{,} \PY{n}{initialize\PYZus{}parameters}\PY{p}{,} \PY{n}{forward\PYZus{}propagation}\PY{p}{,} \PY{n}{backward\PYZus{}propagation}
+\PY{k+kn}{from} \PY{n+nn}{opt\PYZus{}utils\PYZus{}v1a} \PY{k+kn}{import} \PY{n}{compute\PYZus{}cost}\PY{p}{,} \PY{n}{predict}\PY{p}{,} \PY{n}{predict\PYZus{}dec}\PY{p}{,} \PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{,} \PY{n}{load\PYZus{}dataset}
+\PY{k+kn}{from} \PY{n+nn}{copy} \PY{k+kn}{import} \PY{n}{deepcopy}
+\PY{k+kn}{from} \PY{n+nn}{testCases} \PY{k+kn}{import} \PY{o}{*}
+\PY{k+kn}{from} \PY{n+nn}{public\PYZus{}tests} \PY{k+kn}{import} \PY{o}{*}
+
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{7.0}\PY{p}{,} \PY{l+m+mf}{4.0}\PY{p}{)} \PY{c+c1}{\PYZsh{} set default size of plots}
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{image.interpolation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nearest}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{image.cmap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+\PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\# 2 - Gradient Descent
+
+A simple optimization method in machine learning is gradient descent
+(GD). When you take gradient steps with respect to all \(m\) examples on
+each step, it is also called Batch Gradient Descent.
+
+\#\#\# Exercise 1 - update\_parameters\_with\_gd
+
+Implement the gradient descent update rule. The gradient descent rule
+is, for \(l = 1, ..., L\):
+\[ W^{[l]} = W^{[l]} - \alpha \text{ } dW^{[l]} \tag{1}\]
+\[ b^{[l]} = b^{[l]} - \alpha \text{ } db^{[l]} \tag{2}\]
+
+where L is the number of layers and \(\alpha\) is the learning rate. All
+parameters should be stored in the \texttt{parameters} dictionary. Note
+that the iterator \texttt{l} starts at 1 in the \texttt{for} loop as the
+first parameters are \(W^{[1]}\) and \(b^{[1]}\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: update\PYZus{}parameters\PYZus{}with\PYZus{}gd}
+
+\PY{k}{def} \PY{n+nf}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Update parameters using one step of gradient descent}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters to be updated:}
+\PY{l+s+sd}{                    parameters[\PYZsq{}W\PYZsq{} + str(l)] = Wl}
+\PY{l+s+sd}{                    parameters[\PYZsq{}b\PYZsq{} + str(l)] = bl}
+\PY{l+s+sd}{    grads \PYZhy{}\PYZhy{} python dictionary containing your gradients to update each parameters:}
+\PY{l+s+sd}{                    grads[\PYZsq{}dW\PYZsq{} + str(l)] = dWl}
+\PY{l+s+sd}{                    grads[\PYZsq{}db\PYZsq{} + str(l)] = dbl}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} the learning rate, scalar.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your updated parameters }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{parameters}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+
+    \PY{c+c1}{\PYZsh{} Update rule for each parameter}
+    \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{L} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} parameters[\PYZdq{}W\PYZdq{} + str(l)] =  }
+        \PY{c+c1}{\PYZsh{} parameters[\PYZdq{}b\PYZdq{} + str(l)] = }
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    \PY{k}{return} \PY{n}{parameters}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+\PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.01}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W1 =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b1 =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W2 =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b2 =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd\PYZus{}test}\PY{p}{(}\PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A variant of this is Stochastic Gradient Descent (SGD), which is
+equivalent to mini-batch gradient descent, where each mini-batch has
+just 1 example. The update rule that you have just implemented does not
+change. What changes is that you would be computing gradients on just
+one training example at a time, rather than on the whole training set.
+The code examples below illustrate the difference between stochastic
+gradient descent and (batch) gradient descent.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{(Batch) Gradient Descent}:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X }\OperatorTok{=}\NormalTok{ data\_input}
+\NormalTok{Y }\OperatorTok{=}\NormalTok{ labels}
+\NormalTok{m }\OperatorTok{=}\NormalTok{ X.shape[}\DecValTok{1}\NormalTok{]  }\CommentTok{\# Number of training examples}
+\NormalTok{parameters }\OperatorTok{=}\NormalTok{ initialize\_parameters(layers\_dims)}
+\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{0}\NormalTok{, num\_iterations):}
+    \CommentTok{\# Forward propagation}
+\NormalTok{    a, caches }\OperatorTok{=}\NormalTok{ forward\_propagation(X, parameters)}
+    \CommentTok{\# Compute cost}
+\NormalTok{    cost\_total }\OperatorTok{=}\NormalTok{ compute\_cost(a, Y)  }\CommentTok{\# Cost for m training examples}
+    \CommentTok{\# Backward propagation}
+\NormalTok{    grads }\OperatorTok{=}\NormalTok{ backward\_propagation(a, caches, parameters)}
+    \CommentTok{\# Update parameters}
+\NormalTok{    parameters }\OperatorTok{=}\NormalTok{ update\_parameters(parameters, grads)}
+    \CommentTok{\# Compute average cost}
+\NormalTok{    cost\_avg }\OperatorTok{=}\NormalTok{ cost\_total }\OperatorTok{/}\NormalTok{ m}
+        
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Stochastic Gradient Descent}:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X }\OperatorTok{=}\NormalTok{ data\_input}
+\NormalTok{Y }\OperatorTok{=}\NormalTok{ labels}
+\NormalTok{m }\OperatorTok{=}\NormalTok{ X.shape[}\DecValTok{1}\NormalTok{]  }\CommentTok{\# Number of training examples}
+\NormalTok{parameters }\OperatorTok{=}\NormalTok{ initialize\_parameters(layers\_dims)}
+\ControlFlowTok{for}\NormalTok{ i }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{0}\NormalTok{, num\_iterations):}
+\NormalTok{    cost\_total }\OperatorTok{=} \DecValTok{0}
+    \ControlFlowTok{for}\NormalTok{ j }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(}\DecValTok{0}\NormalTok{, m):}
+        \CommentTok{\# Forward propagation}
+\NormalTok{        a, caches }\OperatorTok{=}\NormalTok{ forward\_propagation(X[:,j], parameters)}
+        \CommentTok{\# Compute cost}
+\NormalTok{        cost\_total }\OperatorTok{+=}\NormalTok{ compute\_cost(a, Y[:,j])  }\CommentTok{\# Cost for one training example}
+        \CommentTok{\# Backward propagation}
+\NormalTok{        grads }\OperatorTok{=}\NormalTok{ backward\_propagation(a, caches, parameters)}
+        \CommentTok{\# Update parameters}
+\NormalTok{        parameters }\OperatorTok{=}\NormalTok{ update\_parameters(parameters, grads)}
+    \CommentTok{\# Compute average cost}
+\NormalTok{    cost\_avg }\OperatorTok{=}\NormalTok{ cost\_total }\OperatorTok{/}\NormalTok{ m}
+\end{Highlighting}
+\end{Shaded}
+
+    In Stochastic Gradient Descent, you use only 1 training example before
+updating the gradients. When the training set is large, SGD can be
+faster. But the parameters will ``oscillate'' toward the minimum rather
+than converge smoothly. Here's what that looks like:
+
+Figure 1 : SGD vs GD ``+'' denotes a minimum of the cost. SGD leads to
+many oscillations to reach convergence, but each step is a lot faster to
+compute for SGD than it is for GD, as it uses only one training example
+(vs.~the whole batch for GD).
+
+\textbf{Note} also that implementing SGD requires 3 for-loops in total:
+1. Over the number of iterations 2. Over the \(m\) training examples 3.
+Over the layers (to update all parameters, from \((W^{[1]},b^{[1]})\) to
+\((W^{[L]},b^{[L]})\))
+
+In practice, you'll often get faster results if you don't use the entire
+training set, or just one training example, to perform each update.
+Mini-batch gradient descent uses an intermediate number of examples for
+each step. With mini-batch gradient descent, you loop over the
+mini-batches instead of looping over individual training examples.
+
+Figure 2 : SGD vs Mini-Batch GD ``+'' denotes a minimum of the cost.
+Using mini-batches in your optimization algorithm often leads to faster
+optimization.
+
+    \#\# 3 - Mini-Batch Gradient Descent
+
+Now you'll build some mini-batches from the training set (X, Y).
+
+There are two steps: - \textbf{Shuffle}: Create a shuffled version of
+the training set (X, Y) as shown below. Each column of X and Y
+represents a training example. Note that the random shuffling is done
+synchronously between X and Y. Such that after the shuffling the
+\(i^{th}\) column of X is the example corresponding to the \(i^{th}\)
+label in Y. The shuffling step ensures that examples will be split
+randomly into different mini-batches.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Partition}: Partition the shuffled (X, Y) into mini-batches of
+  size \texttt{mini\_batch\_size} (here 64). Note that the number of
+  training examples is not always divisible by
+  \texttt{mini\_batch\_size}. The last mini batch might be smaller, but
+  you don't need to worry about this. When the final mini-batch is
+  smaller than the full \texttt{mini\_batch\_size}, it will look like
+  this:
+\end{itemize}
+
+\#\#\# Exercise 2 - random\_mini\_batches
+
+Implement \texttt{random\_mini\_batches}. The shuffling part has already
+been coded for you! To help with the partitioning step, you've been
+provided the following code that selects the indexes for the \(1^{st}\)
+and \(2^{nd}\) mini-batches:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{first\_mini\_batch\_X }\OperatorTok{=}\NormalTok{ shuffled\_X[:, }\DecValTok{0}\NormalTok{ : mini\_batch\_size]}
+\NormalTok{second\_mini\_batch\_X }\OperatorTok{=}\NormalTok{ shuffled\_X[:, mini\_batch\_size : }\DecValTok{2} \OperatorTok{*}\NormalTok{ mini\_batch\_size]}
+\NormalTok{...}
+\end{Highlighting}
+\end{Shaded}
+
+Note that the last mini-batch might end up smaller than
+\texttt{mini\_batch\_size=64}. Let \(\lfloor s \rfloor\) represents
+\(s\) rounded down to the nearest integer (this is
+\texttt{math.floor(s)} in Python). If the total number of examples is
+not a multiple of \texttt{mini\_batch\_size=64} then there will be
+\(\left\lfloor \frac{m}{mini\_batch\_size}\right\rfloor\) mini-batches
+with a full 64 examples, and the number of examples in the final
+mini-batch will be
+\(\left(m-mini_\_batch_\_size \times \left\lfloor \frac{m}{mini\_batch\_size}\right\rfloor\right)\).
+
+\textbf{Hint:}
+
+\[mini\_batch\_X = shuffled\_X[:, i : j]\]
+
+Think of a way in which you can use the for loop variable \texttt{k}
+help you increment \texttt{i} and \texttt{j} in multiples of
+mini\_batch\_size.
+
+As an example, if you want to increment in multiples of 3, you could the
+following:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OperatorTok{=} \DecValTok{3}
+\ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in}\NormalTok{ (}\DecValTok{0}\NormalTok{ , }\DecValTok{5}\NormalTok{):}
+    \BuiltInTok{print}\NormalTok{(k }\OperatorTok{*}\NormalTok{ n)}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: random\PYZus{}mini\PYZus{}batches}
+
+\PY{k}{def} \PY{n+nf}{random\PYZus{}mini\PYZus{}batches}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{64}\PY{p}{,} \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Creates a list of random minibatches from (X, Y)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    X \PYZhy{}\PYZhy{} input data, of shape (input size, number of examples)}
+\PY{l+s+sd}{    Y \PYZhy{}\PYZhy{} true \PYZdq{}label\PYZdq{} vector (1 for blue dot / 0 for red dot), of shape (1, number of examples)}
+\PY{l+s+sd}{    mini\PYZus{}batch\PYZus{}size \PYZhy{}\PYZhy{} size of the mini\PYZhy{}batches, integer}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    mini\PYZus{}batches \PYZhy{}\PYZhy{} list of synchronous (mini\PYZus{}batch\PYZus{}X, mini\PYZus{}batch\PYZus{}Y)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{n}{seed}\PY{p}{)}            \PY{c+c1}{\PYZsh{} To make your \PYZdq{}random\PYZdq{} minibatches the same as ours}
+    \PY{n}{m} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}                  \PY{c+c1}{\PYZsh{} number of training examples}
+    \PY{n}{mini\PYZus{}batches} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        
+    \PY{c+c1}{\PYZsh{} Step 1: Shuffle (X, Y)}
+    \PY{n}{permutation} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{permutation}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}
+    \PY{n}{shuffled\PYZus{}X} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{permutation}\PY{p}{]}
+    \PY{n}{shuffled\PYZus{}Y} \PY{o}{=} \PY{n}{Y}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{permutation}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{m}\PY{p}{)}\PY{p}{)}
+    
+    \PY{n}{inc} \PY{o}{=} \PY{n}{mini\PYZus{}batch\PYZus{}size}
+
+    \PY{c+c1}{\PYZsh{} Step 2 \PYZhy{} Partition (shuffled\PYZus{}X, shuffled\PYZus{}Y).}
+    \PY{c+c1}{\PYZsh{} Cases with a complete mini batch size only i.e each of 64 examples.}
+    \PY{n}{num\PYZus{}complete\PYZus{}minibatches} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{floor}\PY{p}{(}\PY{n}{m} \PY{o}{/} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)} \PY{c+c1}{\PYZsh{} number of mini batches of size mini\PYZus{}batch\PYZus{}size in your partitionning}
+    \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}complete\PYZus{}minibatches}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} mini\PYZus{}batch\PYZus{}X =  }
+        \PY{c+c1}{\PYZsh{} mini\PYZus{}batch\PYZus{}Y =}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+        \PY{n}{mini\PYZus{}batch} \PY{o}{=} \PY{p}{(}\PY{n}{mini\PYZus{}batch\PYZus{}X}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}Y}\PY{p}{)}
+        \PY{n}{mini\PYZus{}batches}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{mini\PYZus{}batch}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} For handling the end case (last mini\PYZhy{}batch \PYZlt{} mini\PYZus{}batch\PYZus{}size i.e less than 64)}
+    \PY{k}{if} \PY{n}{m} \PY{o}{\PYZpc{}} \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}(approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} mini\PYZus{}batch\PYZus{}X =}
+        \PY{c+c1}{\PYZsh{} mini\PYZus{}batch\PYZus{}Y =}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+        \PY{n}{mini\PYZus{}batch} \PY{o}{=} \PY{p}{(}\PY{n}{mini\PYZus{}batch\PYZus{}X}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}Y}\PY{p}{)}
+        \PY{n}{mini\PYZus{}batches}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{mini\PYZus{}batch}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{mini\PYZus{}batches}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{64}
+\PY{n}{nx} \PY{o}{=} \PY{l+m+mi}{12288}
+\PY{n}{m} \PY{o}{=} \PY{l+m+mi}{148}
+\PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{nx} \PY{o}{*} \PY{n}{m}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{nx}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}
+\PY{n}{Y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{m}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.5}
+
+\PY{n}{mini\PYZus{}batches} \PY{o}{=} \PY{n}{random\PYZus{}mini\PYZus{}batches}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}
+\PY{n}{n\PYZus{}batches} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{)}
+
+\PY{k}{assert} \PY{n}{n\PYZus{}batches} \PY{o}{==} \PY{n}{math}\PY{o}{.}\PY{n}{ceil}\PY{p}{(}\PY{n}{m} \PY{o}{/} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong number of mini batches. }\PY{l+s+si}{\PYZob{}}\PY{n}{n\PYZus{}batches}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ != }\PY{l+s+si}{\PYZob{}}\PY{n}{math}\PY{o}{.}\PY{n}{ceil}\PY{p}{(}\PY{n}{m} \PY{o}{/} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}batches} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape} \PY{o}{==} \PY{p}{(}\PY{n}{nx}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong shape in }\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ mini batch for X}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{assert} \PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{shape} \PY{o}{==} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong shape in }\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ mini batch for Y}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)} \PY{o}{==} \PY{p}{(}\PY{p}{(}\PY{n}{nx} \PY{o}{*} \PY{p}{(}\PY{n}{nx} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2} \PY{p}{)} \PY{o}{*} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong values. It happens if the order of X rows(features) changes}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{if} \PY{p}{(} \PY{n}{m} \PY{o}{\PYZpc{}} \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+    \PY{k}{assert} \PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{n}{n\PYZus{}batches} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape} \PY{o}{==} \PY{p}{(}\PY{n}{nx}\PY{p}{,} \PY{n}{m} \PY{o}{\PYZpc{}} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong shape in the last minibatch. }\PY{l+s+si}{\PYZob{}}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{n}{n\PYZus{}batches} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ != }\PY{l+s+si}{\PYZob{}}\PY{p}{(}\PY{n}{nx}\PY{p}{,} \PY{n}{m} \PY{o}{\PYZpc{}} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{294912}\PY{p}{,}  \PY{l+m+mi}{86016}\PY{p}{,} \PY{l+m+mi}{454656}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong values. Check the indexes used to form the mini batches}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{assert} \PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1425407}\PY{p}{,} \PY{l+m+mi}{1769471}\PY{p}{,} \PY{l+m+mi}{897023}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wrong values. Check the indexes used to form the mini batches}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}033}\PY{l+s+s2}{[92mAll test passed!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{t\PYZus{}X}\PY{p}{,} \PY{n}{t\PYZus{}Y}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{=} \PY{n}{random\PYZus{}mini\PYZus{}batches\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+\PY{n}{mini\PYZus{}batches} \PY{o}{=} \PY{n}{random\PYZus{}mini\PYZus{}batches}\PY{p}{(}\PY{n}{t\PYZus{}X}\PY{p}{,} \PY{n}{t\PYZus{}Y}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{)}
+
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shape of the 1st mini\PYZus{}batch\PYZus{}X: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shape of the 2nd mini\PYZus{}batch\PYZus{}X: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shape of the 3rd mini\PYZus{}batch\PYZus{}X: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shape of the 1st mini\PYZus{}batch\PYZus{}Y: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shape of the 2nd mini\PYZus{}batch\PYZus{}Y: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)} 
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shape of the 3rd mini\PYZus{}batch\PYZus{}Y: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mini batch sanity check: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{mini\PYZus{}batches}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{random\PYZus{}mini\PYZus{}batches\PYZus{}test}\PY{p}{(}\PY{n}{random\PYZus{}mini\PYZus{}batches}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{What you should remember}: - Shuffling and Partitioning are the
+two steps required to build mini-batches - Powers of two are often
+chosen to be the mini-batch size, e.g., 16, 32, 64, 128.
+
+    \#\# 4 - Momentum
+
+Because mini-batch gradient descent makes a parameter update after
+seeing just a subset of examples, the direction of the update has some
+variance, and so the path taken by mini-batch gradient descent will
+``oscillate'' toward convergence. Using momentum can reduce these
+oscillations.
+
+Momentum takes into account the past gradients to smooth out the update.
+The `direction' of the previous gradients is stored in the variable
+\(v\). Formally, this will be the exponentially weighted average of the
+gradient on previous steps. You can also think of \(v\) as the
+``velocity'' of a ball rolling downhill, building up speed (and
+momentum) according to the direction of the gradient/slope of the hill.
+
+Figure 3 : The red arrows show the direction taken by one step of
+mini-batch gradient descent with momentum. The blue points show the
+direction of the gradient (with respect to the current mini-batch) on
+each step. Rather than just following the gradient, the gradient is
+allowed to influence \(v\) and then take a step in the direction of
+\(v\).
+
+    ~\\
+\#\#\# Exercise 3 - initialize\_velocity Initialize the velocity. The
+velocity, \(v\), is a python dictionary that needs to be initialized
+with arrays of zeros. Its keys are the same as those in the
+\texttt{grads} dictionary, that is: for \(l =1,...,L\):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v[}\StringTok{"dW"} \OperatorTok{+} \BuiltInTok{str}\NormalTok{(l)] }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\#(numpy array of zeros with the same shape as parameters["W" + str(l)])}
+\NormalTok{v[}\StringTok{"db"} \OperatorTok{+} \BuiltInTok{str}\NormalTok{(l)] }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\#(numpy array of zeros with the same shape as parameters["b" + str(l)])}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Note} that the iterator l starts at 1 in the for loop as the
+first parameters are v{[}``dW1''{]} and v{[}``db1''{]} (that's a ``one''
+on the superscript).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: initialize\PYZus{}velocity}
+
+\PY{k}{def} \PY{n+nf}{initialize\PYZus{}velocity}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Initializes the velocity as a python dictionary with:}
+\PY{l+s+sd}{                \PYZhy{} keys: \PYZdq{}dW1\PYZdq{}, \PYZdq{}db1\PYZdq{}, ..., \PYZdq{}dWL\PYZdq{}, \PYZdq{}dbL\PYZdq{} }
+\PY{l+s+sd}{                \PYZhy{} values: numpy arrays of zeros of the same shape as the corresponding gradients/parameters.}
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters.}
+\PY{l+s+sd}{                    parameters[\PYZsq{}W\PYZsq{} + str(l)] = Wl}
+\PY{l+s+sd}{                    parameters[\PYZsq{}b\PYZsq{} + str(l)] = bl}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    v \PYZhy{}\PYZhy{} python dictionary containing the current velocity.}
+\PY{l+s+sd}{                    v[\PYZsq{}dW\PYZsq{} + str(l)] = velocity of dWl}
+\PY{l+s+sd}{                    v[\PYZsq{}db\PYZsq{} + str(l)] = velocity of dbl}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{parameters}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+    \PY{n}{v} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    
+    \PY{c+c1}{\PYZsh{} Initialize velocity}
+    \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{L} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}dW\PYZdq{} + str(l)] =}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}db\PYZdq{} + str(l)] =}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+        
+    \PY{k}{return} \PY{n}{v}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{parameters} \PY{o}{=} \PY{n}{initialize\PYZus{}velocity\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{v} \PY{o}{=} \PY{n}{initialize\PYZus{}velocity}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] =}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{initialize\PYZus{}velocity\PYZus{}test}\PY{p}{(}\PY{n}{initialize\PYZus{}velocity}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    ~\\
+\#\#\# Exercise 4 - update\_parameters\_with\_momentum
+
+Now, implement the parameters update with momentum. The momentum update
+rule is, for \(l = 1, ..., L\):
+
+\[ \begin{cases}
+v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\
+W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}
+\end{cases}\tag{3}\]
+
+\[\begin{cases}
+v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\
+b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}} 
+\end{cases}\tag{4}\]
+
+where L is the number of layers, \(\beta\) is the momentum and
+\(\alpha\) is the learning rate. All parameters should be stored in the
+\texttt{parameters} dictionary. Note that the iterator \texttt{l} starts
+at 1 in the \texttt{for} loop as the first parameters are \(W^{[1]}\)
+and \(b^{[1]}\) (that's a ``one'' on the superscript).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: update\PYZus{}parameters\PYZus{}with\PYZus{}momentum}
+
+\PY{k}{def} \PY{n+nf}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Update parameters using Momentum}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters:}
+\PY{l+s+sd}{                    parameters[\PYZsq{}W\PYZsq{} + str(l)] = Wl}
+\PY{l+s+sd}{                    parameters[\PYZsq{}b\PYZsq{} + str(l)] = bl}
+\PY{l+s+sd}{    grads \PYZhy{}\PYZhy{} python dictionary containing your gradients for each parameters:}
+\PY{l+s+sd}{                    grads[\PYZsq{}dW\PYZsq{} + str(l)] = dWl}
+\PY{l+s+sd}{                    grads[\PYZsq{}db\PYZsq{} + str(l)] = dbl}
+\PY{l+s+sd}{    v \PYZhy{}\PYZhy{} python dictionary containing the current velocity:}
+\PY{l+s+sd}{                    v[\PYZsq{}dW\PYZsq{} + str(l)] = ...}
+\PY{l+s+sd}{                    v[\PYZsq{}db\PYZsq{} + str(l)] = ...}
+\PY{l+s+sd}{    beta \PYZhy{}\PYZhy{} the momentum hyperparameter, scalar}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} the learning rate, scalar}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your updated parameters }
+\PY{l+s+sd}{    v \PYZhy{}\PYZhy{} python dictionary containing your updated velocities}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{parameters}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+    
+    \PY{c+c1}{\PYZsh{} Momentum update for each parameter}
+    \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{L} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} (approx. 4 lines)}
+        \PY{c+c1}{\PYZsh{} compute velocities}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} update parameters}
+        \PY{c+c1}{\PYZsh{} parameters[\PYZdq{}W\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} parameters[\PYZdq{}b\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+        
+    \PY{k}{return} \PY{n}{parameters}\PY{p}{,} \PY{n}{v}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{parameters}\PY{p}{,} \PY{n}{v} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.01}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W1 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b1 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W2 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b2 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = v}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum\PYZus{}test}\PY{p}{(}\PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Note that}: - The velocity is initialized with zeros. So the
+algorithm will take a few iterations to ``build up'' velocity and start
+to take bigger steps. - If \(\beta = 0\), then this just becomes
+standard gradient descent without momentum.
+
+\textbf{How do you choose \(\beta\)?}
+
+\begin{itemize}
+\tightlist
+\item
+  The larger the momentum \(\beta\) is, the smoother the update, because
+  it takes the past gradients into account more. But if \(\beta\) is too
+  big, it could also smooth out the updates too much.
+\item
+  Common values for \(\beta\) range from 0.8 to 0.999. If you don't feel
+  inclined to tune this, \(\beta = 0.9\) is often a reasonable default.
+\item
+  Tuning the optimal \(\beta\) for your model might require trying
+  several values to see what works best in terms of reducing the value
+  of the cost function \(J\).
+\end{itemize}
+
+    \textbf{What you should remember}: - Momentum takes past gradients into
+account to smooth out the steps of gradient descent. It can be applied
+with batch gradient descent, mini-batch gradient descent or stochastic
+gradient descent. - You have to tune a momentum hyperparameter \(\beta\)
+and a learning rate \(\alpha\).
+
+    ~\\
+\#\# 5 - Adam
+
+Adam is one of the most effective optimization algorithms for training
+neural networks. It combines ideas from RMSProp (described in lecture)
+and Momentum.
+
+\textbf{How does Adam work?} 1. It calculates an exponentially weighted
+average of past gradients, and stores it in variables \(v\) (before bias
+correction) and \(v^{corrected}\) (with bias correction). 2. It
+calculates an exponentially weighted average of the squares of the past
+gradients, and stores it in variables \(s\) (before bias correction) and
+\(s^{corrected}\) (with bias correction). 3. It updates parameters in a
+direction based on combining information from ``1'' and ``2''.
+
+The update rule is, for \(l = 1, ..., L\):
+
+\[\begin{cases}
+v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\
+v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\
+s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\
+s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_2)^t} \\
+W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}} + \varepsilon}
+\end{cases}\] where: - t counts the number of steps taken of Adam - L is
+the number of layers - \(\beta_1\) and \(\beta_2\) are hyperparameters
+that control the two exponentially weighted averages. - \(\alpha\) is
+the learning rate - \(\varepsilon\) is a very small number to avoid
+dividing by zero
+
+As usual, all parameters are stored in the \texttt{parameters}
+dictionary
+
+    ~\\
+\#\#\# Exercise 5 - initialize\_adam
+
+Initialize the Adam variables \(v, s\) which keep track of the past
+information.
+
+\textbf{Instruction}: The variables \(v, s\) are python dictionaries
+that need to be initialized with arrays of zeros. Their keys are the
+same as for \texttt{grads}, that is: for \(l = 1, ..., L\):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v[}\StringTok{"dW"} \OperatorTok{+} \BuiltInTok{str}\NormalTok{(l)] }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\#(numpy array of zeros with the same shape as parameters["W" + str(l)])}
+\NormalTok{v[}\StringTok{"db"} \OperatorTok{+} \BuiltInTok{str}\NormalTok{(l)] }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\#(numpy array of zeros with the same shape as parameters["b" + str(l)])}
+\NormalTok{s[}\StringTok{"dW"} \OperatorTok{+} \BuiltInTok{str}\NormalTok{(l)] }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\#(numpy array of zeros with the same shape as parameters["W" + str(l)])}
+\NormalTok{s[}\StringTok{"db"} \OperatorTok{+} \BuiltInTok{str}\NormalTok{(l)] }\OperatorTok{=}\NormalTok{ ... }\CommentTok{\#(numpy array of zeros with the same shape as parameters["b" + str(l)])}
+\end{Highlighting}
+\end{Shaded}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: initialize\PYZus{}adam}
+
+\PY{k}{def} \PY{n+nf}{initialize\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{)} \PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Initializes v and s as two python dictionaries with:}
+\PY{l+s+sd}{                \PYZhy{} keys: \PYZdq{}dW1\PYZdq{}, \PYZdq{}db1\PYZdq{}, ..., \PYZdq{}dWL\PYZdq{}, \PYZdq{}dbL\PYZdq{} }
+\PY{l+s+sd}{                \PYZhy{} values: numpy arrays of zeros of the same shape as the corresponding gradients/parameters.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters.}
+\PY{l+s+sd}{                    parameters[\PYZdq{}W\PYZdq{} + str(l)] = Wl}
+\PY{l+s+sd}{                    parameters[\PYZdq{}b\PYZdq{} + str(l)] = bl}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns: }
+\PY{l+s+sd}{    v \PYZhy{}\PYZhy{} python dictionary that will contain the exponentially weighted average of the gradient. Initialized with zeros.}
+\PY{l+s+sd}{                    v[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+\PY{l+s+sd}{                    v[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+\PY{l+s+sd}{    s \PYZhy{}\PYZhy{} python dictionary that will contain the exponentially weighted average of the squared gradient. Initialized with zeros.}
+\PY{l+s+sd}{                    s[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+\PY{l+s+sd}{                    s[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{parameters}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+    \PY{n}{v} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    \PY{n}{s} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    
+    \PY{c+c1}{\PYZsh{} Initialize v, s. Input: \PYZdq{}parameters\PYZdq{}. Outputs: \PYZdq{}v, s\PYZdq{}.}
+    \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{L} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} (approx. 4 lines)}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} s[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} s[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    
+    \PY{k}{return} \PY{n}{v}\PY{p}{,} \PY{n}{s}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{parameters} \PY{o}{=} \PY{n}{initialize\PYZus{}adam\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{v}\PY{p}{,} \PY{n}{s} \PY{o}{=} \PY{n}{initialize\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{v[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{s[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{s}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{s[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{s}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{s[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{s}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dW2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{s[}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{] = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{s}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{db2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{initialize\PYZus{}adam\PYZus{}test}\PY{p}{(}\PY{n}{initialize\PYZus{}adam}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    ~\\
+\#\#\# Exercise 6 - update\_parameters\_with\_adam
+
+Now, implement the parameters update with Adam. Recall the general
+update rule is, for \(l = 1, ..., L\):
+
+\[\begin{cases}
+v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\
+v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\
+s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\
+s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_2)^t} \\
+W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}} + \varepsilon}
+\end{cases}\]
+
+\textbf{Note} that the iterator \texttt{l} starts at 1 in the
+\texttt{for} loop as the first parameters are \(W^{[1]}\) and
+\(b^{[1]}\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: update\PYZus{}parameters\PYZus{}with\PYZus{}adam}
+
+\PY{k}{def} \PY{n+nf}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.01}\PY{p}{,}
+                                \PY{n}{beta1} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{beta2} \PY{o}{=} \PY{l+m+mf}{0.999}\PY{p}{,}  \PY{n}{epsilon} \PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Update parameters using Adam}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your parameters:}
+\PY{l+s+sd}{                    parameters[\PYZsq{}W\PYZsq{} + str(l)] = Wl}
+\PY{l+s+sd}{                    parameters[\PYZsq{}b\PYZsq{} + str(l)] = bl}
+\PY{l+s+sd}{    grads \PYZhy{}\PYZhy{} python dictionary containing your gradients for each parameters:}
+\PY{l+s+sd}{                    grads[\PYZsq{}dW\PYZsq{} + str(l)] = dWl}
+\PY{l+s+sd}{                    grads[\PYZsq{}db\PYZsq{} + str(l)] = dbl}
+\PY{l+s+sd}{    v \PYZhy{}\PYZhy{} Adam variable, moving average of the first gradient, python dictionary}
+\PY{l+s+sd}{    s \PYZhy{}\PYZhy{} Adam variable, moving average of the squared gradient, python dictionary}
+\PY{l+s+sd}{    t \PYZhy{}\PYZhy{} Adam variable, counts the number of taken steps}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} the learning rate, scalar.}
+\PY{l+s+sd}{    beta1 \PYZhy{}\PYZhy{} Exponential decay hyperparameter for the first moment estimates }
+\PY{l+s+sd}{    beta2 \PYZhy{}\PYZhy{} Exponential decay hyperparameter for the second moment estimates }
+\PY{l+s+sd}{    epsilon \PYZhy{}\PYZhy{} hyperparameter preventing division by zero in Adam updates}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your updated parameters }
+\PY{l+s+sd}{    v \PYZhy{}\PYZhy{} Adam variable, moving average of the first gradient, python dictionary}
+\PY{l+s+sd}{    s \PYZhy{}\PYZhy{} Adam variable, moving average of the squared gradient, python dictionary}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{parameters}\PY{p}{)} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2}                 \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+    \PY{n}{v\PYZus{}corrected} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}                         \PY{c+c1}{\PYZsh{} Initializing first moment estimate, python dictionary}
+    \PY{n}{s\PYZus{}corrected} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}                         \PY{c+c1}{\PYZsh{} Initializing second moment estimate, python dictionary}
+    
+    \PY{c+c1}{\PYZsh{} Perform Adam update on all parameters}
+    \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{L} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Moving average of the gradients. Inputs: \PYZdq{}v, grads, beta1\PYZdq{}. Output: \PYZdq{}v\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} v[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+
+        \PY{c+c1}{\PYZsh{} Compute bias\PYZhy{}corrected first moment estimate. Inputs: \PYZdq{}v, beta1, t\PYZdq{}. Output: \PYZdq{}v\PYZus{}corrected\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} v\PYZus{}corrected[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} v\PYZus{}corrected[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+
+        \PY{c+c1}{\PYZsh{} Moving average of the squared gradients. Inputs: \PYZdq{}s, grads, beta2\PYZdq{}. Output: \PYZdq{}s\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{}(approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} s[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} s[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+
+        \PY{c+c1}{\PYZsh{} Compute bias\PYZhy{}corrected second raw moment estimate. Inputs: \PYZdq{}s, beta2, t\PYZdq{}. Output: \PYZdq{}s\PYZus{}corrected\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} s\PYZus{}corrected[\PYZdq{}dW\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} s\PYZus{}corrected[\PYZdq{}db\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+
+        \PY{c+c1}{\PYZsh{} Update parameters. Inputs: \PYZdq{}parameters, learning\PYZus{}rate, v\PYZus{}corrected, s\PYZus{}corrected, epsilon\PYZdq{}. Output: \PYZdq{}parameters\PYZdq{}.}
+        \PY{c+c1}{\PYZsh{} (approx. 2 lines)}
+        \PY{c+c1}{\PYZsh{} parameters[\PYZdq{}W\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} parameters[\PYZdq{}b\PYZdq{} + str(l)] = ...}
+        \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+        
+        
+        \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+
+    \PY{k}{return} \PY{n}{parameters}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{v\PYZus{}corrected}\PY{p}{,} \PY{n}{s\PYZus{}corrected}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{parametersi}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{vi}\PY{p}{,} \PY{n}{si}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{beta1}\PY{p}{,} \PY{n}{beta2}\PY{p}{,} \PY{n}{epsilon} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam\PYZus{}test\PYZus{}case}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{parameters}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{vc}\PY{p}{,} \PY{n}{sc}  \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam}\PY{p}{(}\PY{n}{parametersi}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{vi}\PY{p}{,} \PY{n}{si}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{beta1}\PY{p}{,} \PY{n}{beta2}\PY{p}{,} \PY{n}{epsilon}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W1 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W2 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b1 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b2 = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{parameters}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam\PYZus{}test}\PY{p}{(}\PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Expected values:}
+
+\begin{verbatim}
+W1 = 
+[[ 1.63942428 -0.6268425  -0.54320974]
+ [-1.08782943  0.85036983 -2.2865723 ]]
+W2 = 
+[[ 0.33356139 -0.26425199  1.47707772]
+ [-2.04538458 -0.30744933 -0.36903141]
+ [ 1.14873036 -1.09256871 -0.15734651]]
+b1 = 
+[[ 1.75854357]
+ [-0.74616067]]
+b2 = 
+[[-0.89228024]
+ [ 0.02707193]
+ [ 0.56782561]]
+\end{verbatim}
+
+    You now have three working optimization algorithms (mini-batch gradient
+descent, Momentum, Adam). Let's implement a model with each of these
+optimizers and observe the difference.
+
+    ~\\
+\#\# 6 - Model with different Optimization algorithms
+
+Below, you'll use the following ``moons'' dataset to test the different
+optimization methods. (The dataset is named ``moons'' because the data
+from each of the two classes looks a bit like a crescent-shaped moon.)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y} \PY{o}{=} \PY{n}{load\PYZus{}dataset}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    A 3-layer neural network has already been implemented for you! You'll
+train it with: - Mini-batch \textbf{Gradient Descent}: it will call your
+function: - \texttt{update\_parameters\_with\_gd()} - Mini-batch
+\textbf{Momentum}: it will call your functions: -
+\texttt{initialize\_velocity()} and
+\texttt{update\_parameters\_with\_momentum()} - Mini-batch
+\textbf{Adam}: it will call your functions: -
+\texttt{initialize\_adam()} and
+\texttt{update\_parameters\_with\_adam()}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{model}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.0007}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{64}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,}
+          \PY{n}{beta1} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{beta2} \PY{o}{=} \PY{l+m+mf}{0.999}\PY{p}{,}  \PY{n}{epsilon} \PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{,} \PY{n}{num\PYZus{}epochs} \PY{o}{=} \PY{l+m+mi}{5000}\PY{p}{,} \PY{n}{print\PYZus{}cost} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    3\PYZhy{}layer neural network model which can be run in different optimizer modes.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    X \PYZhy{}\PYZhy{} input data, of shape (2, number of examples)}
+\PY{l+s+sd}{    Y \PYZhy{}\PYZhy{} true \PYZdq{}label\PYZdq{} vector (1 for blue dot / 0 for red dot), of shape (1, number of examples)}
+\PY{l+s+sd}{    optimizer \PYZhy{}\PYZhy{} the optimizer to be passed, gradient descent, momentum or adam}
+\PY{l+s+sd}{    layers\PYZus{}dims \PYZhy{}\PYZhy{} python list, containing the size of each layer}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} the learning rate, scalar.}
+\PY{l+s+sd}{    mini\PYZus{}batch\PYZus{}size \PYZhy{}\PYZhy{} the size of a mini batch}
+\PY{l+s+sd}{    beta \PYZhy{}\PYZhy{} Momentum hyperparameter}
+\PY{l+s+sd}{    beta1 \PYZhy{}\PYZhy{} Exponential decay hyperparameter for the past gradients estimates }
+\PY{l+s+sd}{    beta2 \PYZhy{}\PYZhy{} Exponential decay hyperparameter for the past squared gradients estimates }
+\PY{l+s+sd}{    epsilon \PYZhy{}\PYZhy{} hyperparameter preventing division by zero in Adam updates}
+\PY{l+s+sd}{    num\PYZus{}epochs \PYZhy{}\PYZhy{} number of epochs}
+\PY{l+s+sd}{    print\PYZus{}cost \PYZhy{}\PYZhy{} True to print the cost every 1000 epochs}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your updated parameters }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{layers\PYZus{}dims}\PY{p}{)}             \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+    \PY{n}{costs} \PY{o}{=} \PY{p}{[}\PY{p}{]}                       \PY{c+c1}{\PYZsh{} to keep track of the cost}
+    \PY{n}{t} \PY{o}{=} \PY{l+m+mi}{0}                            \PY{c+c1}{\PYZsh{} initializing the counter required for Adam update}
+    \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{10}                        \PY{c+c1}{\PYZsh{} For grading purposes, so that your \PYZdq{}random\PYZdq{} minibatches are the same as ours}
+    \PY{n}{m} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}                   \PY{c+c1}{\PYZsh{} number of training examples}
+    
+    \PY{c+c1}{\PYZsh{} Initialize parameters}
+    \PY{n}{parameters} \PY{o}{=} \PY{n}{initialize\PYZus{}parameters}\PY{p}{(}\PY{n}{layers\PYZus{}dims}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Initialize the optimizer}
+    \PY{k}{if} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{k}{pass} \PY{c+c1}{\PYZsh{} no initialization required for gradient descent}
+    \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{momentum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{n}{v} \PY{o}{=} \PY{n}{initialize\PYZus{}velocity}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+    \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{n}{v}\PY{p}{,} \PY{n}{s} \PY{o}{=} \PY{n}{initialize\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Optimization loop}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}epochs}\PY{p}{)}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} Define the random minibatches. We increment the seed to reshuffle differently the dataset after each epoch}
+        \PY{n}{seed} \PY{o}{=} \PY{n}{seed} \PY{o}{+} \PY{l+m+mi}{1}
+        \PY{n}{minibatches} \PY{o}{=} \PY{n}{random\PYZus{}mini\PYZus{}batches}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{,} \PY{n}{seed}\PY{p}{)}
+        \PY{n}{cost\PYZus{}total} \PY{o}{=} \PY{l+m+mi}{0}
+        
+        \PY{k}{for} \PY{n}{minibatch} \PY{o+ow}{in} \PY{n}{minibatches}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} Select a minibatch}
+            \PY{p}{(}\PY{n}{minibatch\PYZus{}X}\PY{p}{,} \PY{n}{minibatch\PYZus{}Y}\PY{p}{)} \PY{o}{=} \PY{n}{minibatch}
+
+            \PY{c+c1}{\PYZsh{} Forward propagation}
+            \PY{n}{a3}\PY{p}{,} \PY{n}{caches} \PY{o}{=} \PY{n}{forward\PYZus{}propagation}\PY{p}{(}\PY{n}{minibatch\PYZus{}X}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Compute cost and add to the cost total}
+            \PY{n}{cost\PYZus{}total} \PY{o}{+}\PY{o}{=} \PY{n}{compute\PYZus{}cost}\PY{p}{(}\PY{n}{a3}\PY{p}{,} \PY{n}{minibatch\PYZus{}Y}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Backward propagation}
+            \PY{n}{grads} \PY{o}{=} \PY{n}{backward\PYZus{}propagation}\PY{p}{(}\PY{n}{minibatch\PYZus{}X}\PY{p}{,} \PY{n}{minibatch\PYZus{}Y}\PY{p}{,} \PY{n}{caches}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Update parameters}
+            \PY{k}{if} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{n}{parameters} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{momentum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{n}{parameters}\PY{p}{,} \PY{n}{v} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{n}{t} \PY{o}{=} \PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} Adam counter}
+                \PY{n}{parameters}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,}
+                                                               \PY{n}{t}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{beta1}\PY{p}{,} \PY{n}{beta2}\PY{p}{,}  \PY{n}{epsilon}\PY{p}{)}
+        \PY{n}{cost\PYZus{}avg} \PY{o}{=} \PY{n}{cost\PYZus{}total} \PY{o}{/} \PY{n}{m}
+        
+        \PY{c+c1}{\PYZsh{} Print the cost every 1000 epoch}
+        \PY{k}{if} \PY{n}{print\PYZus{}cost} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZpc{}} \PY{l+m+mi}{1000} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cost after epoch }\PY{l+s+si}{\PYZpc{}i}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{cost\PYZus{}avg}\PY{p}{)}\PY{p}{)}
+        \PY{k}{if} \PY{n}{print\PYZus{}cost} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZpc{}} \PY{l+m+mi}{100} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost\PYZus{}avg}\PY{p}{)}
+                
+    \PY{c+c1}{\PYZsh{} plot the cost}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{costs}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epochs (per 100)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Learning rate = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{parameters}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now, run this 3 layer neural network with each of the 3 optimization
+methods.
+
+~\\
+\#\#\# 6.1 - Mini-Batch Gradient Descent
+
+Run the following code to see how the model does with mini-batch
+gradient descent.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Gradient Descent optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    ~\\
+\#\#\# 6.2 - Mini-Batch Gradient Descent with Momentum
+
+Next, run the following code to see how the model does with momentum.
+Because this example is relatively simple, the gains from using momemtum
+are small - but for more complex problems you might see bigger gains.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{momentum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Momentum optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    ~\\
+\#\#\# 6.3 - Mini-Batch with Adam
+
+Finally, run the following code to see how the model does with Adam.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Adam optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    ~\\
+\#\#\# 6.4 - Summary
+
+optimization method
+
+accuracy
+
+cost shape
+
+\begin{verbatim}
+<td>
+    Gradient descent
+    </td>
+    <td>
+    >71%
+    </td>
+    <td>
+    smooth
+    </td>
+<tr>
+    <td>
+    Momentum
+    </td>
+    <td>
+    >71%
+    </td>
+    <td>
+    smooth
+    </td>
+</tr>
+<tr>
+    <td>
+    Adam
+    </td>
+    <td>
+    >94%
+    </td>
+    <td>
+    smoother
+    </td>
+</tr>
+\end{verbatim}
+
+Momentum usually helps, but given the small learning rate and the
+simplistic dataset, its impact is almost negligible.
+
+On the other hand, Adam clearly outperforms mini-batch gradient descent
+and Momentum. If you run the model for more epochs on this simple
+dataset, all three methods will lead to very good results. However,
+you've seen that Adam converges a lot faster.
+
+Some advantages of Adam include:
+
+\begin{itemize}
+\tightlist
+\item
+  Relatively low memory requirements (though higher than gradient
+  descent and gradient descent with momentum)
+\item
+  Usually works well even with little tuning of hyperparameters (except
+  \(\alpha\))
+\end{itemize}
+
+    \textbf{References}:
+
+\begin{itemize}
+\tightlist
+\item
+  Adam paper: https://arxiv.org/pdf/1412.6980.pdf
+\end{itemize}
+
+    ~\\
+\#\# 7 - Learning Rate Decay and Scheduling
+
+Lastly, the learning rate is another hyperparameter that can help you
+speed up learning.
+
+During the first part of training, your model can get away with taking
+large steps, but over time, using a fixed value for the learning rate
+alpha can cause your model to get stuck in a wide oscillation that never
+quite converges. But if you were to slowly reduce your learning rate
+alpha over time, you could then take smaller, slower steps that bring
+you closer to the minimum. This is the idea behind learning rate decay.
+
+Learning rate decay can be achieved by using either adaptive methods or
+pre-defined learning rate schedules.
+
+Now, you'll apply scheduled learning rate decay to a 3-layer neural
+network in three different optimizer modes and see how each one differs,
+as well as the effect of scheduling at different epochs.
+
+This model is essentially the same as the one you used before, except in
+this one you'll be able to include learning rate decay. It includes two
+new parameters, decay and decay\_rate.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{model}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.0007}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{64}\PY{p}{,} \PY{n}{beta} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,}
+          \PY{n}{beta1} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{beta2} \PY{o}{=} \PY{l+m+mf}{0.999}\PY{p}{,}  \PY{n}{epsilon} \PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{,} \PY{n}{num\PYZus{}epochs} \PY{o}{=} \PY{l+m+mi}{5000}\PY{p}{,} \PY{n}{print\PYZus{}cost} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,} \PY{n}{decay}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    3\PYZhy{}layer neural network model which can be run in different optimizer modes.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    X \PYZhy{}\PYZhy{} input data, of shape (2, number of examples)}
+\PY{l+s+sd}{    Y \PYZhy{}\PYZhy{} true \PYZdq{}label\PYZdq{} vector (1 for blue dot / 0 for red dot), of shape (1, number of examples)}
+\PY{l+s+sd}{    layers\PYZus{}dims \PYZhy{}\PYZhy{} python list, containing the size of each layer}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} the learning rate, scalar.}
+\PY{l+s+sd}{    mini\PYZus{}batch\PYZus{}size \PYZhy{}\PYZhy{} the size of a mini batch}
+\PY{l+s+sd}{    beta \PYZhy{}\PYZhy{} Momentum hyperparameter}
+\PY{l+s+sd}{    beta1 \PYZhy{}\PYZhy{} Exponential decay hyperparameter for the past gradients estimates }
+\PY{l+s+sd}{    beta2 \PYZhy{}\PYZhy{} Exponential decay hyperparameter for the past squared gradients estimates }
+\PY{l+s+sd}{    epsilon \PYZhy{}\PYZhy{} hyperparameter preventing division by zero in Adam updates}
+\PY{l+s+sd}{    num\PYZus{}epochs \PYZhy{}\PYZhy{} number of epochs}
+\PY{l+s+sd}{    print\PYZus{}cost \PYZhy{}\PYZhy{} True to print the cost every 1000 epochs}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    parameters \PYZhy{}\PYZhy{} python dictionary containing your updated parameters }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{n}{L} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{layers\PYZus{}dims}\PY{p}{)}             \PY{c+c1}{\PYZsh{} number of layers in the neural networks}
+    \PY{n}{costs} \PY{o}{=} \PY{p}{[}\PY{p}{]}                       \PY{c+c1}{\PYZsh{} to keep track of the cost}
+    \PY{n}{t} \PY{o}{=} \PY{l+m+mi}{0}                            \PY{c+c1}{\PYZsh{} initializing the counter required for Adam update}
+    \PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{10}                        \PY{c+c1}{\PYZsh{} For grading purposes, so that your \PYZdq{}random\PYZdq{} minibatches are the same as ours}
+    \PY{n}{m} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}                   \PY{c+c1}{\PYZsh{} number of training examples}
+    \PY{n}{lr\PYZus{}rates} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{learning\PYZus{}rate0} \PY{o}{=} \PY{n}{learning\PYZus{}rate}   \PY{c+c1}{\PYZsh{} the original learning rate}
+    
+    \PY{c+c1}{\PYZsh{} Initialize parameters}
+    \PY{n}{parameters} \PY{o}{=} \PY{n}{initialize\PYZus{}parameters}\PY{p}{(}\PY{n}{layers\PYZus{}dims}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Initialize the optimizer}
+    \PY{k}{if} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{k}{pass} \PY{c+c1}{\PYZsh{} no initialization required for gradient descent}
+    \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{momentum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{n}{v} \PY{o}{=} \PY{n}{initialize\PYZus{}velocity}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+    \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{n}{v}\PY{p}{,} \PY{n}{s} \PY{o}{=} \PY{n}{initialize\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Optimization loop}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}epochs}\PY{p}{)}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} Define the random minibatches. We increment the seed to reshuffle differently the dataset after each epoch}
+        \PY{n}{seed} \PY{o}{=} \PY{n}{seed} \PY{o}{+} \PY{l+m+mi}{1}
+        \PY{n}{minibatches} \PY{o}{=} \PY{n}{random\PYZus{}mini\PYZus{}batches}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{mini\PYZus{}batch\PYZus{}size}\PY{p}{,} \PY{n}{seed}\PY{p}{)}
+        \PY{n}{cost\PYZus{}total} \PY{o}{=} \PY{l+m+mi}{0}
+        
+        \PY{k}{for} \PY{n}{minibatch} \PY{o+ow}{in} \PY{n}{minibatches}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} Select a minibatch}
+            \PY{p}{(}\PY{n}{minibatch\PYZus{}X}\PY{p}{,} \PY{n}{minibatch\PYZus{}Y}\PY{p}{)} \PY{o}{=} \PY{n}{minibatch}
+
+            \PY{c+c1}{\PYZsh{} Forward propagation}
+            \PY{n}{a3}\PY{p}{,} \PY{n}{caches} \PY{o}{=} \PY{n}{forward\PYZus{}propagation}\PY{p}{(}\PY{n}{minibatch\PYZus{}X}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Compute cost and add to the cost total}
+            \PY{n}{cost\PYZus{}total} \PY{o}{+}\PY{o}{=} \PY{n}{compute\PYZus{}cost}\PY{p}{(}\PY{n}{a3}\PY{p}{,} \PY{n}{minibatch\PYZus{}Y}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Backward propagation}
+            \PY{n}{grads} \PY{o}{=} \PY{n}{backward\PYZus{}propagation}\PY{p}{(}\PY{n}{minibatch\PYZus{}X}\PY{p}{,} \PY{n}{minibatch\PYZus{}Y}\PY{p}{,} \PY{n}{caches}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Update parameters}
+            \PY{k}{if} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{n}{parameters} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}gd}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{momentum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{n}{parameters}\PY{p}{,} \PY{n}{v} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}momentum}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{optimizer} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{n}{t} \PY{o}{=} \PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} Adam counter}
+                \PY{n}{parameters}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{update\PYZus{}parameters\PYZus{}with\PYZus{}adam}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{grads}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{s}\PY{p}{,}
+                                                               \PY{n}{t}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{beta1}\PY{p}{,} \PY{n}{beta2}\PY{p}{,}  \PY{n}{epsilon}\PY{p}{)}
+        \PY{n}{cost\PYZus{}avg} \PY{o}{=} \PY{n}{cost\PYZus{}total} \PY{o}{/} \PY{n}{m}
+        \PY{k}{if} \PY{n}{decay}\PY{p}{:}
+            \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{n}{decay}\PY{p}{(}\PY{n}{learning\PYZus{}rate0}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Print the cost every 1000 epoch}
+        \PY{k}{if} \PY{n}{print\PYZus{}cost} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZpc{}} \PY{l+m+mi}{1000} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cost after epoch }\PY{l+s+si}{\PYZpc{}i}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{cost\PYZus{}avg}\PY{p}{)}\PY{p}{)}
+            \PY{k}{if} \PY{n}{decay}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{learning rate after epoch }\PY{l+s+si}{\PYZpc{}i}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s2}{\PYZdq{}}\PY{o}{\PYZpc{}}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}\PY{p}{)}
+        \PY{k}{if} \PY{n}{print\PYZus{}cost} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZpc{}} \PY{l+m+mi}{100} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost\PYZus{}avg}\PY{p}{)}
+                
+    \PY{c+c1}{\PYZsh{} plot the cost}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{costs}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epochs (per 100)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Learning rate = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{parameters}
+\end{Verbatim}
+\end{tcolorbox}
+
+    ~\\
+\#\#\# 7.1 - Decay on every iteration
+
+For this portion of the assignment, you'll try one of the pre-defined
+schedules for learning rate decay, called exponential learning rate
+decay. It takes this mathematical form:
+
+\[\alpha = \frac{1}{1 + decayRate \times epochNumber} \alpha_{0}\]
+
+~\\
+\#\#\# Exercise 7 - update\_lr
+
+Calculate the new learning rate using exponential weight decay.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: update\PYZus{}lr}
+
+\PY{k}{def} \PY{n+nf}{update\PYZus{}lr}\PY{p}{(}\PY{n}{learning\PYZus{}rate0}\PY{p}{,} \PY{n}{epoch\PYZus{}num}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Calculates updated the learning rate using exponential weight decay.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    learning\PYZus{}rate0 \PYZhy{}\PYZhy{} Original learning rate. Scalar}
+\PY{l+s+sd}{    epoch\PYZus{}num \PYZhy{}\PYZhy{} Epoch number. Integer}
+\PY{l+s+sd}{    decay\PYZus{}rate \PYZhy{}\PYZhy{} Decay rate. Scalar}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} Updated learning rate. Scalar }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}(approx. 1 line)}
+    \PY{c+c1}{\PYZsh{} learning\PYZus{}rate = }
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    \PY{k}{return} \PY{n}{learning\PYZus{}rate}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.5}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original learning rate: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+\PY{n}{epoch\PYZus{}num} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{n}{decay\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{learning\PYZus{}rate\PYZus{}2} \PY{o}{=} \PY{n}{update\PYZus{}lr}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{epoch\PYZus{}num}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Updated learning rate: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}2}\PY{p}{)}
+
+\PY{n}{update\PYZus{}lr\PYZus{}test}\PY{p}{(}\PY{n}{update\PYZus{}lr}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{,} \PY{n}{decay}\PY{o}{=}\PY{n}{update\PYZus{}lr}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Gradient Descent optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Notice that if you set the decay to occur at every iteration, the
+learning rate goes to zero too quickly - even if you start with a higher
+learning rate.
+
+Epoch Number
+
+Learning Rate
+
+Cost
+
+0
+
+0.100000
+
+0.701091
+
+1000
+
+0.000100
+
+0.661884
+
+2000
+
+0.000050
+
+0.658620
+
+3000
+
+0.000033
+
+0.656765
+
+4000
+
+0.000025
+
+0.655486
+
+5000
+
+0.000020
+
+0.654514
+
+When you're training for a few epoch this doesn't cause a lot of
+troubles, but when the number of epochs is large the optimization
+algorithm will stop updating. One common fix to this issue is to decay
+the learning rate every few steps. This is called fixed interval
+scheduling.
+
+    \#\#\# 7.2 - Fixed Interval Scheduling
+
+You can help prevent the learning rate speeding to zero too quickly by
+scheduling the exponential learning rate decay at a fixed time interval,
+for example 1000. You can either number the intervals, or divide the
+epoch by the time interval, which is the size of window with the
+constant learning rate.
+
+    \#\#\# Exercise 8 - schedule\_lr\_decay
+
+Calculate the new learning rate using exponential weight decay with
+fixed interval scheduling.
+
+\textbf{Instructions}: Implement the learning rate scheduling such that
+it only changes when the epochNum is a multiple of the timeInterval.
+
+\textbf{Note:} The fraction in the denominator uses the floor operation.
+
+\[\alpha = \frac{1}{1 + decayRate \times \lfloor\frac{epochNum}{timeInterval}\rfloor} \alpha_{0}\]
+
+\textbf{Hint:}
+\href{https://numpy.org/doc/stable/reference/generated/numpy.floor.html}{numpy.floor}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} GRADED FUNCTION: schedule\PYZus{}lr\PYZus{}decay}
+
+\PY{k}{def} \PY{n+nf}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{(}\PY{n}{learning\PYZus{}rate0}\PY{p}{,} \PY{n}{epoch\PYZus{}num}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{p}{,} \PY{n}{time\PYZus{}interval}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Calculates updated the learning rate using exponential weight decay.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Arguments:}
+\PY{l+s+sd}{    learning\PYZus{}rate0 \PYZhy{}\PYZhy{} Original learning rate. Scalar}
+\PY{l+s+sd}{    epoch\PYZus{}num \PYZhy{}\PYZhy{} Epoch number. Integer.}
+\PY{l+s+sd}{    decay\PYZus{}rate \PYZhy{}\PYZhy{} Decay rate. Scalar.}
+\PY{l+s+sd}{    time\PYZus{}interval \PYZhy{}\PYZhy{} Number of epochs where you update the learning rate.}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    learning\PYZus{}rate \PYZhy{}\PYZhy{} Updated learning rate. Scalar }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{} (approx. 1 lines)}
+    \PY{c+c1}{\PYZsh{} learning\PYZus{}rate = ...}
+    \PY{c+c1}{\PYZsh{} YOUR CODE STARTS HERE}
+    
+    
+    \PY{c+c1}{\PYZsh{} YOUR CODE ENDS HERE}
+    \PY{k}{return} \PY{n}{learning\PYZus{}rate}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.5}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original learning rate: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{p}{)}
+
+\PY{n}{epoch\PYZus{}num\PYZus{}1} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{epoch\PYZus{}num\PYZus{}2} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n}{decay\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.3}
+\PY{n}{time\PYZus{}interval} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n}{learning\PYZus{}rate\PYZus{}1} \PY{o}{=} \PY{n}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{epoch\PYZus{}num\PYZus{}1}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{p}{,} \PY{n}{time\PYZus{}interval}\PY{p}{)}
+\PY{n}{learning\PYZus{}rate\PYZus{}2} \PY{o}{=} \PY{n}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{p}{,} \PY{n}{epoch\PYZus{}num\PYZus{}2}\PY{p}{,} \PY{n}{decay\PYZus{}rate}\PY{p}{,} \PY{n}{time\PYZus{}interval}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Updated learning rate after }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ epochs: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch\PYZus{}num\PYZus{}1}\PY{p}{)}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Updated learning rate after }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ epochs: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch\PYZus{}num\PYZus{}2}\PY{p}{)}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}2}\PY{p}{)}
+
+\PY{n}{schedule\PYZus{}lr\PYZus{}decay\PYZus{}test}\PY{p}{(}\PY{n}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Expected output}
+
+\begin{verbatim}
+Original learning rate:  0.5
+Updated learning rate after 10 epochs:  0.5
+Updated learning rate after 100 epochs:  0.3846153846153846
+\end{verbatim}
+
+    \#\#\# 7.3 - Using Learning Rate Decay for each Optimization Method
+
+Below, you'll use the following ``moons'' dataset to test the different
+optimization methods. (The dataset is named ``moons'' because the data
+from each of the two classes looks a bit like a crescent-shaped moon.)
+
+    \#\#\#\# 7.3.1 - Gradient Descent with Learning Rate Decay
+
+Run the following code to see how the model does gradient descent and
+weight decay.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{,} \PY{n}{decay}\PY{o}{=}\PY{n}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Gradient Descent optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\#\#\# 7.3.2 - Gradient Descent with Momentum and Learning Rate Decay
+
+Run the following code to see how the model does gradient descent with
+momentum and weight decay.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{momentum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{,} \PY{n}{decay}\PY{o}{=}\PY{n}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Gradient Descent with momentum optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\#\#\# 7.3.3 - Adam with Learning Rate Decay
+
+Run the following code to see how the model does Adam and weight decay.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} train 3\PYZhy{}layer model}
+\PY{n}{layers\PYZus{}dims} \PY{o}{=} \PY{p}{[}\PY{n}{train\PYZus{}X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{parameters} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{layers\PYZus{}dims}\PY{p}{,} \PY{n}{optimizer} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{adam}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.01}\PY{p}{,} \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{,} \PY{n}{decay}\PY{o}{=}\PY{n}{schedule\PYZus{}lr\PYZus{}decay}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Predict}
+\PY{n}{predictions} \PY{o}{=} \PY{n}{predict}\PY{p}{(}\PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{,} \PY{n}{parameters}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot decision boundary}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Model with Adam optimization}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{2.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{axes}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{]}\PY{p}{)}
+\PY{n}{plot\PYZus{}decision\PYZus{}boundary}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{predict\PYZus{}dec}\PY{p}{(}\PY{n}{parameters}\PY{p}{,} \PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}X}\PY{p}{,} \PY{n}{train\PYZus{}Y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\#\# 7.4 - Achieving similar performance with different methods
+
+With Mini-batch GD or Mini-batch GD with Momentum, the accuracy is
+significantly lower than Adam, but when learning rate decay is added on
+top, either can achieve performance at a speed and accuracy score that's
+similar to Adam.
+
+In the case of Adam, notice that the learning curve achieves a similar
+accuracy but faster.
+
+optimization method
+
+accuracy
+
+\begin{verbatim}
+<td>
+    Gradient descent
+    </td>
+    <td>
+    >94.6%
+    </td>
+<tr>
+    <td>
+    Momentum
+    </td>
+    <td>
+    >95.6%
+    </td>
+</tr>
+<tr>
+    <td>
+    Adam
+    </td>
+    <td>
+    94%
+    </td>
+</tr>
+\end{verbatim}
+
+    \textbf{Congratulations}! You've made it to the end of the Optimization
+methods notebook. Here's a quick recap of everything you're now able to
+do:
+
+\begin{itemize}
+\tightlist
+\item
+  Apply three different optimization methods to your models
+\item
+  Build mini-batches for your training set
+\item
+  Use learning rate decay scheduling to speed up your training
+\end{itemize}
+
+Great work!
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
